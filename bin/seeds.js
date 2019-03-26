@@ -46,7 +46,12 @@ Promise.all(
   base_countries.map(async country => {
     const countryDoc = await Country.create({
       name: country.name,
-      iso3: country.iso3
+      iso3: country.iso3,
+      landlocked: country.landlocked,
+      flag: country.flag,
+      region: country.region,
+      subregion: country.subregion,
+      borders: country.borders
     });
 
     for (key in country.indicators) {
@@ -55,7 +60,7 @@ Promise.all(
         key: key,
         value:
           country.indicators[key] !== "-"
-            ? parseInt(country.indicators[key])
+            ? parseFloat(country.indicators[key])
             : 0
       });
     }
