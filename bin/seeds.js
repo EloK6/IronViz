@@ -33,10 +33,31 @@ const base_countries = governments.map(gov => {
   };
 });
 
-Country.create(base_countries, err => {
-  if (err) {
-    throw err;
-  }
-  console.log(`Created ${base_countries.length} countries`);
-  mongoose.connection.close();
-});
+// Country.create(base_countries, err => {
+//   if (err) {
+//     throw err;
+//   }
+//   console.log(`Created ${base_countries.length} countries`);
+
+//   mongoose.connection.close();
+// });
+
+Promise.all(
+  base_countries.map(async country => {
+    const countryDoc = await Country.create({
+      name: country.name,
+      iso3: country.iso3
+    });
+
+    for (key in country.indicators) {
+      await Indicator.create({
+        country_id: countryDoc._id,
+        key: key,
+        value:
+          country.indicators[key] !== "-"
+            ? parseInt(country.indicators[key])
+            : 0
+      });
+    }
+  })
+).then(() => mongoose.connection.close());
