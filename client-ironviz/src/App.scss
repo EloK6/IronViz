@@ -1,16 +1,9 @@
 body {
-  // min-height: 100%;
+  min-height: 100%;
   padding: 0;
   margin: 0;
   position: relative;
-  height: 100%;
   box-sizing: border-box;
-}
-
-body::after {
-  content: "";
-  display: block;
-  height: 30px; /* Set same as footer's height */
 }
 
 .App {
@@ -20,31 +13,39 @@ body::after {
 }
 
 /* ----------//////////HOMEPAGE//////////---------- */
-.HomePage__image-cover-home {
-  position: relative;
+.HomePage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.HomePage__content {
+  flex: 1;
+  background-image: url("/assets/home.jpg");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  width: 100%;
-  height: 100vh;
 }
+
 .HomePage__text {
-  position: absolute;
-  left: 5%;
-  top: 31%;
+  margin-left: 5%;
+  margin-top: 10%;
   width: 45%;
-  background: white;
+  background: black;
   border-radius: 8px;
-  opacity: 0.8;
+  opacity: 0.7;
+  color: white;
 }
 /* ----------//////////FOOTER//////////---------- */
 .footer {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: 50px;
-  background-color: #343a40;
+  background-color: #051111;
   color: white;
+}
+
+.footer__content {
+  margin-left: 2%;
 }
 
 [data-route="/"] {
@@ -58,6 +59,31 @@ body::after {
 }
 
 /* ----------//////////NAVBAR//////////---------- */
-.NavBar {
+
+.navbar {
+  background-color: #051111;
   color: white;
+}
+
+/* ----------//////////COUNTRIES//////////---------- */
+
+.BoxCountries > ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.BoxCountries > li {
+  list-style-type: none;
+}
+
+.BoxCountries__card {
+  margin: 0 auto;
+  margin-right: 10px;
+  margin-left: 10px;
+  min-height: 200px;
+  min-width: 200px;
+  overflow: auto;
+  border: 1px;
+  box-shadow: 3px 3px 6px 0 #a9a9a9;
 }

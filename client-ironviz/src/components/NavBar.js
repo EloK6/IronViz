@@ -6,8 +6,8 @@ class NavBar extends Component {
   render() {
     return (
       <div className="NavBar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-dark navbar-trans">
-          <img src={baseline} alt="logo" />
+        <nav class="navbar navbar-expand-lg navbar-dark">
+          <img src={baseline} alt="logo" class="navbar-brand" />
           <button
             className="navbar-toggler"
             type="button"
