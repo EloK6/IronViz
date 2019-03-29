@@ -7,7 +7,9 @@ class NavBar extends Component {
     return (
       <div className="NavBar">
         <nav class="navbar navbar-expand-lg navbar-dark">
-          <img src={baseline} alt="logo" class="navbar-brand" />
+          <Link to="/" className="nav-link">
+            <img src={baseline} alt="logo" class="navbar-brand" />
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -22,11 +24,11 @@ class NavBar extends Component {
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mr-auto">
-              <li className="nav-item active">
+              {/* <li className="nav-item active">
                 <Link to="/" className="nav-link">
                   Home
                 </Link>
-              </li>
+              </li> */}
               <li className="nav-item">
                 <Link to="/indicators" className="nav-link">
                   Main indicators
