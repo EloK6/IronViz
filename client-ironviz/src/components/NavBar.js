@@ -28,8 +28,13 @@ class NavBar extends Component {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/" className="nav-link">
+                <Link to="/indicators" className="nav-link">
                   Main indicators
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/countries" className="nav-link">
+                  Countries
                 </Link>
               </li>
               <li className="nav-item dropdown">
