@@ -3,6 +3,7 @@ import React, { Component } from "react";
 class BoxHover extends Component {
   render() {
     const { value1, value2, value3, value4, value5 } = this.props;
+
     return (
       <div className="BoxCountries">
         <ul>
@@ -23,7 +24,7 @@ class BoxHover extends Component {
                   <td div className="BoxHover__background">
                     <div
                       className="BoxHover__fill"
-                      style={{ width: value2 + "%" }}
+                      style={{ width: value2 * 2 + "%" }}
                     />
                   </td>
                 </tr>
@@ -32,7 +33,7 @@ class BoxHover extends Component {
                   <td div className="BoxHover__background">
                     <div
                       className="BoxHover__fill"
-                      style={{ width: value3 + "%" }}
+                      style={{ width: value3 * 100 + "%" }}
                     />
                   </td>
                 </tr>
@@ -41,7 +42,7 @@ class BoxHover extends Component {
                   <td div className="BoxHover__background">
                     <div
                       className="BoxHover__fill"
-                      style={{ width: value4 + "%" }}
+                      style={{ width: value4 * 10 + "%" }}
                     />
                   </td>
                 </tr>

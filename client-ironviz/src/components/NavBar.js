@@ -6,9 +6,9 @@ class NavBar extends Component {
   render() {
     return (
       <div className="NavBar">
-        <nav class="navbar navbar-expand-lg navbar-dark">
+        <nav className="navbar navbar-expand-lg navbar-dark">
           <Link to="/" className="nav-link">
-            <img src={baseline} alt="logo" class="navbar-brand" />
+            <img src={baseline} alt="logo" className="navbar-brand" />
           </Link>
           <button
             className="navbar-toggler"
