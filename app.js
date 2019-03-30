@@ -14,7 +14,7 @@ const MongoStore = require("connect-mongo")(session);
 const flash = require("connect-flash");
 
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost/lab-profile-app", {
+  .connect(process.env.MONGODB_URI || "mongodb://localhost/ironviz", {
     useNewUrlParser: true
   })
   .then(x => {
@@ -89,5 +89,7 @@ app.use("/", index);
 
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
+
+app.use("/api", require("./routes/countries"));
 
 module.exports = app;
