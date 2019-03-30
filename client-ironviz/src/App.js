@@ -3,7 +3,7 @@ import "./App.scss";
 import { Switch, Route } from "react-router-dom";
 
 import HomePage from "./components/HomePage";
-import Countries from "./components/Countries";
+import Countries from "./components/countries/Countries";
 
 class App extends Component {
   render() {

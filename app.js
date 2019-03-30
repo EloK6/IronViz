@@ -91,5 +91,6 @@ const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
 
 app.use("/api", require("./routes/countries"));
+app.use("/api", require("./routes/indicators"));
 
 module.exports = app;

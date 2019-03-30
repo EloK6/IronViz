@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import NavBar from "./NavBar";
-import Footer from "./Footer";
+import NavBar from "../NavBar";
+import Footer from "../Footer";
 import axios from "axios";
 import BoxCountries from "./BoxCountries";
 // import BoxHover from "./BoxHover";
