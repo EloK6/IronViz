@@ -3,6 +3,7 @@ import NavBar from "../NavBar";
 import Footer from "../Footer";
 import axios from "axios";
 import BoxCountries from "./BoxCountries";
+import { Link } from "react-router-dom";
 // import BoxHover from "./BoxHover";
 
 class Countries extends Component {
@@ -29,17 +30,23 @@ class Countries extends Component {
     return (
       <div className="Countries">
         <NavBar />
+
         <div className="Countries__content">
           {this.state.listOfCountries.map(eachCountry => {
             return (
-              <BoxCountries
-                flag={eachCountry.flag}
-                iso3={eachCountry.iso3}
-                country={eachCountry.name}
-              />
+              <div key={eachCountry._id}>
+                <Link to={`/countries/${eachCountry._id}`}>
+                  <BoxCountries
+                    flag={eachCountry.flag}
+                    iso3={eachCountry.iso3}
+                    country={eachCountry.name}
+                  />
+                </Link>
+              </div>
             );
           })}
         </div>
+
         {/* <div className="Countries__content">
           {this.state.allGovArray.map(eachGov => {
             return (

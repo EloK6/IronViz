@@ -76,8 +76,7 @@ body {
 /* ----------//////////BOXCOUNTRIES//////////---------- */
 
 // .BoxCountries {
-//   display: flex;
-//   flex-direction: row;
+//   text-decoration: none;
 // }
 
 .BoxCountries > ul {
@@ -105,6 +104,7 @@ body {
   text-align: center;
   font-size: 50px;
   transition: transform 1s;
+  text-decoration: none;
 }
 
 .BoxCountries__card > li > p,
@@ -144,6 +144,33 @@ body {
 // }
 
 .BoxHover__fill {
+  background-color: green;
+  border-radius: 3px;
+  height: 20px;
+}
+
+/* ----------//////////COUNTRIESDETAIL//////////---------- */
+.CountriesDetail {
+  background-image: url("/assets/background-countries.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+}
+
+.CountriesDetail__table {
+  background-color: white;
+  table-layout: fixed;
+  min-width: 600px;
+  border: 1px solid black;
+}
+
+.CountriesDetail__table > td {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.CountriesDetail__fill {
   background-color: green;
   border-radius: 3px;
   height: 20px;
