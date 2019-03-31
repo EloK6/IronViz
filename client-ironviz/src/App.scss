@@ -6,11 +6,11 @@ body {
   box-sizing: border-box;
 }
 
-.App {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+// .App {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
 
 /* ----------//////////HOMEPAGE//////////---------- */
 .HomePage {
@@ -96,6 +96,7 @@ body {
   box-shadow: 3px 3px 6px 0 #a9a9a9;
   padding-top: 30px;
   border-radius: 2%;
+  margin-bottom: 15px;
 }
 
 .BoxCountries__card__flag {
@@ -151,21 +152,78 @@ body {
 
 /* ----------//////////COUNTRIESDETAIL//////////---------- */
 .CountriesDetail {
-  background-image: url("/assets/background-countries.png");
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.CountriesDetail__content {
+  flex: 1;
+  background-image: url("/assets/countries.png");
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  width: 100%;
+  // opacity: 0.5;
+}
+.CountriesDetail__card {
+  border: 1px solid #a9a9a9;
+  box-shadow: 3px 3px 6px 0 #a9a9a9;
+  border-radius: 8%;
+  margin: 100px;
+  @media (max-width: 992px) {
+    margin: 0;
+  }
 }
 
-.CountriesDetail__table {
+.CountriesDetail__card__header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #051111;
+  color: white;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.link__header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flag__header {
+  font-size: 70px;
+}
+
+.fas {
+  font-size: 20px;
+  color: white;
+  background: black;
+}
+.CountriesDetail__card__table-global {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding: 20px;
+  background-color: white;
+  @media (max-width: 992px) {
+    padding: 10px;
+    flex-direction: column;
+  }
+}
+.CountriesDetail__card__table {
+  margin: 0 auto;
+  width: 600px;
+  flex: 2;
   background-color: white;
   table-layout: fixed;
-  min-width: 600px;
-  border: 1px solid black;
+  @media (max-width: 576px) {
+    font-size: 15px;
+    width: 350px;
+  }
 }
 
-.CountriesDetail__table > td {
+.CountriesDetail__card__table > td {
   overflow: hidden;
   white-space: nowrap;
 }
@@ -174,4 +232,5 @@ body {
   background-color: green;
   border-radius: 3px;
   height: 20px;
+  width: 200px;
 }

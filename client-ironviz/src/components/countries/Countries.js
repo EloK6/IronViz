@@ -35,7 +35,10 @@ class Countries extends Component {
           {this.state.listOfCountries.map(eachCountry => {
             return (
               <div key={eachCountry._id}>
-                <Link to={`/countries/${eachCountry._id}`}>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={`/countries/${eachCountry._id}`}
+                >
                   <BoxCountries
                     flag={eachCountry.flag}
                     iso3={eachCountry.iso3}
