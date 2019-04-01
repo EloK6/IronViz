@@ -6,7 +6,7 @@ class Footer extends Component {
     return (
       <footer className="footer">
         <div className="footer__content">
-          Project IronHack. We can hire me :
+          Project IronHack.
           <Link
             to="www.linkedin.com/in/elodie-cassignol"
             className="footer__link"
