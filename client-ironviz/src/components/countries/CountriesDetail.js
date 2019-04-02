@@ -14,8 +14,6 @@ class CountriesDetail extends Component {
 
   getOneCountry = () => {
     const { params } = this.props.match;
-    // axios
-    //   .get(`http://localhost:5000/api/countries/${params.id}`)
     axios
       .all([
         axios.get(`http://localhost:5000/api/countries/${params.id}`),
@@ -23,7 +21,6 @@ class CountriesDetail extends Component {
       ])
       .then(
         axios.spread((countryResp, indicResp) => {
-          console.log("indic", indicResp);
           this.setState({
             flag: countryResp.data.flag,
             name: countryResp.data.name,
@@ -47,6 +44,47 @@ class CountriesDetail extends Component {
             gpdCapita: this.getIndicatorValue(
               indicResp.data,
               "GDP per capita (PPP)"
+            ),
+            unemployment: this.getIndicatorValue(
+              indicResp.data,
+              "unemployment (%)"
+            ),
+            govSpending: this.getIndicatorValue(
+              indicResp.data,
+              "government spending score"
+            ),
+            polRights: this.getIndicatorValue(
+              indicResp.data,
+              "political rights score"
+            ),
+            civilLib: this.getIndicatorValue(
+              indicResp.data,
+              "civil liberties score"
+            ),
+            judicial: this.getIndicatorValue(
+              indicResp.data,
+              "judicial effectiveness score"
+            ),
+            govIntegrity: this.getIndicatorValue(
+              indicResp.data,
+              "government integrity score"
+            ),
+            propertyRight: this.getIndicatorValue(
+              indicResp.data,
+              "property rights score"
+            ),
+            tax: this.getIndicatorValue(indicResp.data, "tax burden score"),
+            economicFreedom: this.getIndicatorValue(
+              indicResp.data,
+              "overall economic freedom score"
+            ),
+            financialFreedom: this.getIndicatorValue(
+              indicResp.data,
+              "financial freedom score"
+            ),
+            women: this.getIndicatorValue(
+              indicResp.data,
+              "women MPs (% of all MPs)"
             )
           });
         })
@@ -66,7 +104,18 @@ class CountriesDetail extends Component {
       humanDev,
       worldHappiness,
       sustainableDev,
-      gpdCapita
+      gpdCapita,
+      unemployment,
+      govSpending,
+      polRights,
+      civilLib,
+      judicial,
+      govIntegrity,
+      propertyRight,
+      tax,
+      economicFreedom,
+      financialFreedom,
+      women
     } = this.state;
     console.log(valueGini);
     return (
@@ -142,116 +191,107 @@ class CountriesDetail extends Component {
                     />
                   </td>
                 </tr>
-                {/* <tr>
-                  <td>Hello</td>
+                <tr>
+                  <td>Unemployment</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "12%" }}
+                      style={{ width: unemployment + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Gini</td>
+                  <td>Government spending score</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "50%" }}
+                      style={{ width: govSpending + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Happy planet</td>
+                  <td>Political rights score </td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "70%" }}
+                      style={{ width: polRights * (100 / 7) + "%" }}
                     />
                   </td>
                 </tr>
               </table>
               <table className="CountriesDetail__card__table">
                 <tr>
-                  <td>Gini</td>
+                  <td>Civil liberties</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "50%" }}
+                      style={{ width: civilLib * (100 / 7) + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Happy planet</td>
+                  <td>Judicial effectiveness score</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "70%" }}
+                      style={{ width: judicial + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Human development</td>
+                  <td>Government integrity score</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "20%" }}
+                      style={{ width: govIntegrity + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>World happiness report score</td>
+                  <td>Property rights score</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "80%" }}
+                      style={{ width: propertyRight + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Sustainable dev</td>
+                  <td>Tax burden score</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "12%" }}
+                      style={{ width: tax + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Sustainable economic development assessment</td>
+                  <td>Overall economic freedom score</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "12%" }}
+                      style={{ width: economicFreedom + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>GPD per Capita</td>
+                  <td>Financial freedom score</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "12%" }}
+                      style={{ width: financialFreedom + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Gini</td>
+                  <td>Women MPs (% of all MPs)</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "50%" }}
+                      style={{ width: women + "%" }}
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td>Happy planet</td>
-                  <td div className="CountriesDetail__background">
-                    <div
-                      className="CountriesDetail__fill"
-                      style={{ width: "70%" }}
-                    />
-                  </td>
-                </tr> */}
               </table>
             </div>
           </div>
