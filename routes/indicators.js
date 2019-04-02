@@ -5,10 +5,9 @@ const router = express.Router();
 const Country = require("../models/Country");
 const Indicator = require("../models/Indicator");
 
-router.get("/indicators/:countryId", function(req, res, next) {
-  console.log("params", req.params);
-  Indicator.find({ country_id: req.params.countryId })
-    .populate("Country")
+router.get("/indicators/:country_id", function(req, res, next) {
+  Indicator.find({ country_id: req.params.country_id })
+    .populate("country_id")
     .then(allIndicators => {
       res.json(allIndicators);
     })
