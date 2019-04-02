@@ -8,17 +8,49 @@ class CountriesDetail extends Component {
     this.state = {};
   }
 
+  getIndicatorValue = (indicators, key) => {
+    return indicators.find(indic => indic.key === key).value;
+  };
+
   getOneCountry = () => {
     const { params } = this.props.match;
+    // axios
+    //   .get(`http://localhost:5000/api/countries/${params.id}`)
     axios
-      .get(`http://localhost:5000/api/countries/${params.id}`)
-      .then(responseFromApi => {
-        const theProject = responseFromApi.data;
-        this.setState(theProject);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      .all([
+        axios.get(`http://localhost:5000/api/countries/${params.id}`),
+        axios.get(`http://localhost:5000/api/indicators/${params.id}`)
+      ])
+      .then(
+        axios.spread((countryResp, indicResp) => {
+          console.log("indic", indicResp);
+          this.setState({
+            flag: countryResp.data.flag,
+            name: countryResp.data.name,
+            valueGini: this.getIndicatorValue(indicResp.data, "GINI index"),
+            valueHappyP: this.getIndicatorValue(
+              indicResp.data,
+              "happy planet index"
+            ),
+            humanDev: this.getIndicatorValue(
+              indicResp.data,
+              "human development index"
+            ),
+            worldHappiness: this.getIndicatorValue(
+              indicResp.data,
+              "world happiness report score"
+            ),
+            sustainableDev: this.getIndicatorValue(
+              indicResp.data,
+              "sustainable economic development assessment (SEDA)"
+            ),
+            gpdCapita: this.getIndicatorValue(
+              indicResp.data,
+              "GDP per capita (PPP)"
+            )
+          });
+        })
+      );
   };
 
   componentDidMount() {
@@ -26,8 +58,17 @@ class CountriesDetail extends Component {
   }
 
   render() {
-    const { flag, name } = this.state;
-
+    const {
+      flag,
+      name,
+      valueGini,
+      valueHappyP,
+      humanDev,
+      worldHappiness,
+      sustainableDev,
+      gpdCapita
+    } = this.state;
+    console.log(valueGini);
     return (
       <div className="CountriesDetail">
         <div className="CountriesDetail__content">
@@ -52,7 +93,7 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "50%" }}
+                      style={{ width: valueGini + "%" }}
                     />
                   </td>
                 </tr>
@@ -61,7 +102,7 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "70%" }}
+                      style={{ width: valueHappyP + "%" }}
                     />
                   </td>
                 </tr>
@@ -70,7 +111,7 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "20%" }}
+                      style={{ width: humanDev + "%" }}
                     />
                   </td>
                 </tr>
@@ -79,7 +120,7 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "80%" }}
+                      style={{ width: worldHappiness + "%" }}
                     />
                   </td>
                 </tr>
@@ -88,21 +129,21 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "12%" }}
+                      style={{ width: sustainableDev + "%" }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Sustainable economic development assessment</td>
+                  <td>GPD per capita</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: "12%" }}
+                      style={{ width: (gpdCapita * 100) / 160526 + "%" }}
                     />
                   </td>
                 </tr>
-                <tr>
-                  <td>GPD per Capita</td>
+                {/* <tr>
+                  <td>Hello</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
@@ -210,7 +251,7 @@ class CountriesDetail extends Component {
                       style={{ width: "70%" }}
                     />
                   </td>
-                </tr>
+                </tr> */}
               </table>
             </div>
           </div>
