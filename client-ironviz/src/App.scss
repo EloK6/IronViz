@@ -273,3 +273,14 @@ body {
   height: 20px;
   width: 200px;
 }
+
+/* ----------//////////INDICATORS//////////---------- */
+.Indicators {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.Indicators__dataviz {
+  flex: 1;
+}
