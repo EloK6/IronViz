@@ -13,7 +13,6 @@ router.get("/countries", (req, res, next) => {
     .catch(err => {
       res.json(err);
     });
-  console.log("hello", res);
 });
 
 // GET route => to get a specific country

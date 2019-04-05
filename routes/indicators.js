@@ -16,4 +16,16 @@ router.get("/indicators/:country_id", function(req, res, next) {
     });
 });
 
+//GET route => to get all indicators
+router.get("/countries", (req, res, next) => {
+  Indicator.find()
+    .populate("country_id")
+    .then(allIndics => {
+      res.json(allIndics);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
 module.exports = router;
