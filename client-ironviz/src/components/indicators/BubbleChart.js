@@ -1,35 +1,28 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-import data from "../governments.json";
-
-// function getData() {
-//   let numItems = 195 + Math.floor(195 * Math.random());
-//   let data = [];
-//   for (let i = 0; i < numItems; i++) {
-//     data.push({
-//       x: Math.random(),
-//       y: Math.random(),
-//       r: Math.random(),
-//       colour: i % 5
-//     });
-//   }
-//   return data;
-// }
-
-// d3.json("governments.json").then(function(data) {
-//   console.log(data[0]);
-// });
+// import data from "../governments.json";
+import axios from "axios";
 
 class BubbleChart extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: data };
-    // this.state = {
-    //   data: getData()
-    // };
+    this.state = {
+      data: []
+    };
 
     this.updateStyleAndAttrs = this.updateChart.bind(this);
   }
+
+  getData = () => {
+    axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
+      this.setState(
+        {
+          data: responseFromApi.data
+        },
+        () => this.props.statePass(this.state.data)
+      );
+    });
+  };
 
   // handleClick() {
   //   this.setState({
@@ -39,6 +32,7 @@ class BubbleChart extends Component {
 
   componentDidMount() {
     this.updateChart();
+    this.getData();
   }
 
   componentDidUpdate() {
@@ -47,21 +41,46 @@ class BubbleChart extends Component {
 
   updateChart() {
     // let maxRadius = 20;
-    let xMax = d3.max(data, d => d["human development index"]);
-    let yMax = d3.max(data, d => d["surface area (Km2)"]);
+
+    //xScale
+    let xMax = d3.max(
+      this.state.data.map(d =>
+        d.indicator_id.find(indic => indic.key === "human development index")
+      ),
+      d => d.value
+    );
+
     let xScale = d3
       .scaleLinear()
       .domain([0, xMax])
       .range([0, this.props.width]);
+
+    //yScale
+    let yMax = d3.max(
+      this.state.data.map(d =>
+        d.indicator_id.find(indic => indic.key === "population")
+      ),
+      d => d.value
+    );
+
     let yScale = d3
       .scaleLinear()
       .domain([0, yMax])
       .range([this.props.height, 0]);
+
+    //Radius
     // let rScale = d3
     //   .scaleLinear()
     //   .domain([0, 1])
     //   .range([0, maxRadius]);
 
+    //Color
+    let color = d3
+      .scaleOrdinal()
+      .domain(["Asia", "Africa", "Europe", "Americas", "Oceania"])
+      .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
+
+    //dataviz
     let dataviz = d3
       .select(this.svgEl)
       .selectAll("circle")
@@ -76,11 +95,19 @@ class BubbleChart extends Component {
       .merge(dataviz)
       .transition()
       .duration(1000)
-      .attr("cx", d => xScale(d["human development index"]))
-      .attr("cy", d => yScale(d["surface area (Km2)"]))
+      .attr("cx", d =>
+        xScale(
+          d.indicator_id.find(indic => indic.key === "human development index")
+            .value
+        )
+      )
+      .attr("cy", d =>
+        yScale(d.indicator_id.find(indic => indic.key === "population").value)
+      )
       .attr("r", 10)
-      // .attr("r", d => rScale(d.r))
       .style("fill", "blue");
+    // .attr("r", d => rScale(d.r))
+    // .style("fill", d => color(d.region));
 
     dataviz.exit().remove();
   }
@@ -89,8 +116,12 @@ class BubbleChart extends Component {
     return (
       <div className="BubbleChart">
         <svg
-          width={this.props.width}
-          height={this.props.height}
+          width={
+            this.props.width + this.props.marginLeft + this.props.marginRight
+          }
+          height={
+            this.props.height + this.props.marginTop + this.props.marginBottom
+          }
           ref={element => (this.svgEl = element)}
         />
       </div>
