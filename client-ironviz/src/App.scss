@@ -22,6 +22,7 @@ body {
 .HomePage__content {
   flex: 1;
   background-image: url("/assets/home.jpg");
+  background-color: #051111;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -163,7 +164,8 @@ body {
 .BoxCountries__card:hover {
   background-color: #e4e6e6;
   .BoxCountries__card__flag {
-    transform: translate(-100px, -40px) scale(0.5);
+    transform: translate3d(-100px, -40px, 0) scale3d(0.5, 0.5, 1);
+    will-change: transform;
   }
 }
 

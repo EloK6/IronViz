@@ -58,7 +58,7 @@ class BubbleChart extends Component {
     //yScale
     let yMax = d3.max(
       this.state.data.map(d =>
-        d.indicator_id.find(indic => indic.key === "population")
+        d.indicator_id.find(indic => indic.key === "GDP per capita (PPP)")
       ),
       d => d.value
     );
@@ -69,15 +69,21 @@ class BubbleChart extends Component {
       .range([this.props.height, 0]);
 
     //Radius
-    // let rScale = d3
-    //   .scaleLinear()
-    //   .domain([0, 1])
-    //   .range([0, maxRadius]);
+    let maxRadius = d3.max(
+      this.state.data.map(d =>
+        d.indicator_id.find(indic => indic.key === "population")
+      ),
+      d => d.value
+    );
+    let rScale = d3
+      .scaleLinear()
+      .domain([1, maxRadius])
+      .range([5, 60]);
 
     //Color
     let color = d3
       .scaleOrdinal()
-      .domain(["Asia", "Africa", "Europe", "Americas", "Oceania"])
+      .domain([this.state.data.map(d => d.region)])
       .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
 
     //dataviz
@@ -102,26 +108,34 @@ class BubbleChart extends Component {
         )
       )
       .attr("cy", d =>
-        yScale(d.indicator_id.find(indic => indic.key === "population").value)
+        yScale(
+          d.indicator_id.find(indic => indic.key === "GDP per capita (PPP)")
+            .value
+        )
       )
-      .attr("r", 10)
-      .style("fill", "blue");
-    // .attr("r", d => rScale(d.r))
-    // .style("fill", d => color(d.region));
+      .attr("r", d => {
+        let found = d.indicator_id.find(indic => {
+          return indic.key === "population";
+        });
+        return rScale(found.value);
+      })
+      .style("fill", d => color(d.region));
 
     dataviz.exit().remove();
   }
 
   render() {
+    const w = this.props.width + this.props.marginLeft + this.props.marginRight;
+    const h =
+      this.props.height + this.props.marginTop + this.props.marginBottom;
+
     return (
       <div className="BubbleChart">
         <svg
-          width={
-            this.props.width + this.props.marginLeft + this.props.marginRight
-          }
-          height={
-            this.props.height + this.props.marginTop + this.props.marginBottom
-          }
+          preserveAspectRatio="xMidYMid meet"
+          viewBox={`0 0 ${w} ${h}`}
+          width={w}
+          height={h}
           ref={element => (this.svgEl = element)}
         />
       </div>
