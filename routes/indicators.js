@@ -17,7 +17,7 @@ router.get("/indicators/:country_id", function(req, res, next) {
 });
 
 //GET route => to get all indicators
-router.get("/countries", (req, res, next) => {
+router.get("/indicators", (req, res, next) => {
   Indicator.find()
     .populate("country_id")
     .then(allIndics => {
