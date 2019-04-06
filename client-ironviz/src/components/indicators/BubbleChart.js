@@ -45,7 +45,9 @@ class BubbleChart extends Component {
     //xScale
     let xMax = d3.max(
       this.state.data.map(d =>
-        d.indicator_id.find(indic => indic.key === "human development index")
+        d.indicator_id.find(
+          indic => indic.key === "overall economic freedom score"
+        )
       ),
       d => d.value
     );
@@ -103,8 +105,9 @@ class BubbleChart extends Component {
       .duration(1000)
       .attr("cx", d =>
         xScale(
-          d.indicator_id.find(indic => indic.key === "human development index")
-            .value
+          d.indicator_id.find(
+            indic => indic.key === "overall economic freedom score"
+          ).value
         )
       )
       .attr("cy", d =>
