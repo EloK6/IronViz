@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const countrySchema = new Schema(
   {
+    indicator_id: [{ type: Schema.Types.ObjectId, ref: "Indicator" }],
     name: String,
     iso3: String,
     landlocked: Boolean,

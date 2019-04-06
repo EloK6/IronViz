@@ -53,9 +53,9 @@ Promise.all(
       subregion: country.subregion,
       borders: country.borders
     });
-
+    const indicatorIds = [];
     for (key in country.indicators) {
-      await Indicator.create({
+      const indicator = await Indicator.create({
         country_id: countryDoc._id,
         key: key,
         value:
@@ -63,6 +63,10 @@ Promise.all(
             ? parseFloat(country.indicators[key])
             : 0
       });
+      indicatorIds.push(indicator._id);
     }
+    await Country.findByIdAndUpdate(countryDoc._id, {
+      $push: { indicator_id: indicatorIds }
+    });
   })
 ).then(() => mongoose.connection.close());

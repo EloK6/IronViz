@@ -3,10 +3,12 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 const Country = require("../models/Country");
+const Indicator = require("../models/Indicator");
 
 //GET route => to get all Countries
 router.get("/countries", (req, res, next) => {
   Country.find()
+    .populate("indicator_id")
     .then(allCountries => {
       res.json(allCountries);
     })
