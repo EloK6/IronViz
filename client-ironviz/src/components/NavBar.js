@@ -30,7 +30,7 @@ class NavBar extends Component {
                 </Link>
               </li> */}
               <li className="nav-item borderLeftRight">
-                <Link to="/indicators" className="nav-link">
+                <Link to="/dataviz" className="nav-link">
                   Datavisualisations
                 </Link>
               </li>

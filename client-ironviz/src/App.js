@@ -14,7 +14,7 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/indicators" component={Dataviz} />
+          <Route exact path="/dataviz" component={Dataviz} />
           <Route exact path="/countries" component={Countries} />
           <Route exact path="/countries/:id" component={CountriesDetail} />
           <Route exact path="/own-chart" component={Indicators} />
