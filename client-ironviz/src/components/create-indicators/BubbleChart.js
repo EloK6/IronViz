@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-// import data from "../governments.json";
 import axios from "axios";
 
 class BubbleChart extends Component {
@@ -9,26 +8,15 @@ class BubbleChart extends Component {
     this.state = {
       data: []
     };
-
-    this.updateStyleAndAttrs = this.updateChart.bind(this);
   }
 
   getData = () => {
     axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
-      this.setState(
-        {
-          data: responseFromApi.data
-        },
-        () => this.props.statePass(this.state.data)
-      );
+      this.setState({
+        data: responseFromApi.data
+      });
     });
   };
-
-  // handleClick() {
-  //   this.setState({
-  //     data: getData()
-  //   });
-  // }
 
   componentDidMount() {
     this.updateChart();
@@ -40,14 +28,10 @@ class BubbleChart extends Component {
   }
 
   updateChart() {
-    // let maxRadius = 20;
-
     //xScale
     let xMax = d3.max(
       this.state.data.map(d =>
-        d.indicator_id.find(
-          indic => indic.key === "overall economic freedom score"
-        )
+        d.indicator_id.find(indic => indic.key === "happy planet index")
       ),
       d => d.value
     );
@@ -88,6 +72,50 @@ class BubbleChart extends Component {
       .domain([this.state.data.map(d => d.region)])
       .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
 
+    //Tooltip div that is hidden by default:
+    let tooltip = d3
+      .select("dataviz")
+      .append("div")
+      .style("opacity", 0)
+      .attr("class", "tooltip")
+      .style("background-color", "black")
+      .style("border-radius", "5px")
+      .style("padding", "10px")
+      .style("color", "white");
+
+    //functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+    // let showTooltip = d => {
+    //   tooltip.transition().duration(200);
+    //   tooltip
+    //     .style("opacity", 1)
+    //     .html("Country: " + d.name)
+    //     .style("left", d3.mouse(this)[0] + 30 + "px")
+    //     .style("top", d3.mouse(this)[1] + 30 + "px");
+    // };
+    // var moveTooltip = d => {
+    //   tooltip
+    //     .style("left", d3.mouse(this)[0] + 30 + "px")
+    //     .style("top", d3.mouse(this)[1] + 30 + "px");
+    // };
+    // var hideTooltip = d => {
+    //   tooltip
+    //     .transition()
+    //     .duration(200)
+    //     .style("opacity", 0);
+    // };
+
+    // Add X axis
+    var x = d3
+      .scaleLinear()
+      .domain([0, xMax])
+      .range([0, this.props.width]);
+
+    //Add Y axis
+    var y = d3
+      .scaleLinear()
+      .domain([0, yMax])
+      .range([this.props.height, 0]);
+
     //dataviz
     let dataviz = d3
       .select(this.svgEl)
@@ -97,17 +125,16 @@ class BubbleChart extends Component {
     dataviz
       .enter()
       .append("circle")
-      .attr("cx", 0.5 * this.props.width)
-      .attr("cy", 0.5 * this.props.height)
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("r", 0.1)
       .style("fill", "#fff")
       .merge(dataviz)
       .transition()
-      .duration(1000)
+      .duration(2000)
       .attr("cx", d =>
         xScale(
-          d.indicator_id.find(
-            indic => indic.key === "overall economic freedom score"
-          ).value
+          d.indicator_id.find(indic => indic.key === "happy planet index").value
         )
       )
       .attr("cy", d =>
@@ -122,9 +149,18 @@ class BubbleChart extends Component {
         });
         return rScale(found.value);
       })
-      .style("fill", d => color(d.region));
+      .style("fill", d => color(d.region))
+      .style("opacity", 0.65)
+      .style("stroke", "white");
+    // .on("mouseover", showTooltip)
+    // .on("mousemove", moveTooltip)
+    // .on("mouseleave", hideTooltip);
 
     dataviz.exit().remove();
+
+    // d3.select(this.svgEl)
+    //   .attr("transform", "translate(40, 20)")
+    //   .call(d3.axisLeft(y));
   }
 
   render() {
