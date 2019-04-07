@@ -31,7 +31,7 @@ class NavBar extends Component {
               </li> */}
               <li className="nav-item borderLeftRight">
                 <Link to="/indicators" className="nav-link">
-                  Main indicators
+                  Datavisualisations
                 </Link>
               </li>
               <li className="nav-item borderLeftRight">
@@ -39,7 +39,12 @@ class NavBar extends Component {
                   Countries
                 </Link>
               </li>
-              <li className="nav-item dropdown">
+              <li className="nav-item borderLeftRight">
+                <Link to="/own-chart" className="nav-link">
+                  Main indicators
+                </Link>
+              </li>
+              {/* <li className="nav-item dropdown">
                 <Link
                   to="/"
                   className="nav-link dropdown-toggle"
@@ -59,7 +64,7 @@ class NavBar extends Component {
                     Another Action
                   </Link>
                 </div>
-              </li>
+              </li> */}
             </ul>
           </div>
         </nav>
