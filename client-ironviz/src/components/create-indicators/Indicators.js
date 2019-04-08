@@ -27,11 +27,11 @@ class Indicators extends Component {
           <BubbleChart
             // xAxisValue={this.state.xAxisValue}
             width={800}
-            height={600}
-            marginLeft={50}
-            marginRight={20}
-            marginTop={50}
-            marginBottom={50}
+            height={500}
+            // marginLeft={50}
+            // marginRight={20}
+            // marginTop={50}
+            // marginBottom={50}
           />
         </div>
         <Footer />
