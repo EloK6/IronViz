@@ -8,12 +8,18 @@ class Indicators extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      xAxisValue: ""
+      xAxisValue: "happy planet index",
+      yAxisValue: "GDP per capita (PPP)"
     };
   }
 
-  handleDataXAxis = event => {
-    this.setState({ xAxisValue: event });
+  handleDataXAxis = selection => {
+    this.setState({ xAxisValue: selection });
+    console.log("hellooo", selection);
+  };
+
+  handleDataYAxis = selection2 => {
+    this.setState({ yAxisValue: selection2 });
   };
 
   render() {
@@ -22,16 +28,14 @@ class Indicators extends Component {
         <NavBar />
         <div className="Indicators__dataviz">
           <SelectAxis
-          // handleDataX={this.handleDataXAxis}
+            handleDataX={this.handleDataXAxis}
+            handleDataY={this.handleDataYAxis}
           />
           <BubbleChart
-            // xAxisValue={this.state.xAxisValue}
+            xAxisValue={this.state.xAxisValue}
+            yAxisValue={this.state.yAxisValue}
             width={800}
-            height={500}
-            // marginLeft={50}
-            // marginRight={20}
-            // marginTop={50}
-            // marginBottom={50}
+            height={600}
           />
         </div>
         <Footer />

@@ -9,14 +9,7 @@ class Dataviz extends Component {
       <div className="Dataviz">
         <NavBar />
         <div className="Dataviz__content">
-          <Chart
-            width={800}
-            height={600}
-            marginLeft={50}
-            marginRight={20}
-            marginTop={50}
-            marginBottom={50}
-          />
+          <Chart width={800} height={600} />
         </div>
         <Footer />
       </div>

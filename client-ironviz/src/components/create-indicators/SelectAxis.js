@@ -4,17 +4,22 @@ class SelectAxis extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "happy planet index",
+      valueX: "",
       valueY: "",
       valueR: ""
     };
   }
 
-  // handleChange(event) {
-  //   this.props.handleDataX(this.state.value);
-  //   this.setState({ value: event.target.value });
-  //   console.log(this.state.value);
-  // }
+  handleChangeX = event => {
+    this.setState({ valueX: event.target.value });
+    this.props.handleDataX(event.target.value);
+    // console.log("Hello", event.target.value);
+  };
+
+  handleChangeY = event => {
+    this.setState({ valueY: event.target.value });
+    this.props.handleDataY(event.target.value);
+  };
 
   render() {
     return (
@@ -28,8 +33,8 @@ class SelectAxis extends Component {
               <select
                 className="form-control"
                 id="selectAbscisse"
-                value={this.state.value}
-                onChange={this.handleChange}
+                onChange={this.handleChangeX}
+                name="valueX"
               >
                 <option value="happy planet index" selected>
                   happy planet index
@@ -37,7 +42,7 @@ class SelectAxis extends Component {
                 <option value="human development index">
                   human development index
                 </option>
-                <option value="world happiness report score<">
+                <option value="world happiness report score">
                   world happiness report score
                 </option>
                 <option value="sustainable economic development assessment (SEDA)">
@@ -55,8 +60,8 @@ class SelectAxis extends Component {
               <select
                 className="form-control"
                 id="selectOrdonnee"
-                value={this.state.valueY}
-                onChange={this.handleChange}
+                onChange={this.handleChangeY}
+                name="valueY"
               >
                 <option value="GDP per capita (PPP)" selected>
                   GDP per capita
@@ -86,8 +91,8 @@ class SelectAxis extends Component {
               <select
                 className="form-control"
                 id="selectRadius"
-                value={this.state.valueR}
                 onChange={this.handleChange}
+                name="valueR"
               >
                 <option value="population" selected>
                   population
