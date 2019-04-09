@@ -178,6 +178,7 @@ class BubbleChart extends Component {
   updateChart() {
     const xAxisValue = this.props.xAxisValue;
     const yAxisValue = this.props.yAxisValue;
+    const rAxisValue = this.props.rAxisValue;
 
     //Inner margins of the chart
     const innerMargin = { top: 20, bottom: 40, left: 20, right: 20 };
@@ -214,7 +215,7 @@ class BubbleChart extends Component {
     //Radius
     let maxRadius = d3.max(
       this.state.data.map(d =>
-        d.indicator_id.find(indic => indic.key === "population")
+        d.indicator_id.find(indic => indic.key === rAxisValue)
       ),
       d => d.value
     );
@@ -248,19 +249,14 @@ class BubbleChart extends Component {
       .transition()
       .duration(2000)
       .attr("cx", d =>
-        xScale(
-          d.indicator_id.find(indic => indic.key === "happy planet index").value
-        )
+        xScale(d.indicator_id.find(indic => indic.key === xAxisValue).value)
       )
       .attr("cy", d =>
-        yScale(
-          d.indicator_id.find(indic => indic.key === "GDP per capita (PPP)")
-            .value
-        )
+        yScale(d.indicator_id.find(indic => indic.key === yAxisValue).value)
       )
       .attr("r", d => {
         let found = d.indicator_id.find(indic => {
-          return indic.key === "population";
+          return indic.key === rAxisValue;
         });
         return rScale(found.value);
       })

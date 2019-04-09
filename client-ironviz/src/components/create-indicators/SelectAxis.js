@@ -21,6 +21,11 @@ class SelectAxis extends Component {
     this.props.handleDataY(event.target.value);
   };
 
+  handleChangeR = event => {
+    this.setState({ valueR: event.target.value });
+    this.props.handleDataR(event.target.value);
+  };
+
   render() {
     return (
       <div className="SelectAxis">
@@ -91,14 +96,14 @@ class SelectAxis extends Component {
               <select
                 className="form-control"
                 id="selectRadius"
-                onChange={this.handleChange}
+                onChange={this.handleChangeR}
                 name="valueR"
               >
                 <option value="population" selected>
                   population
                 </option>
                 <option value="surface area (Km2)">surface area (Km2)</option>
-                <option value="GDP ">GDP</option>
+                <option value="GDP (billions PPP)">GDP (billions PPP)</option>
               </select>
             </div>
           </div>

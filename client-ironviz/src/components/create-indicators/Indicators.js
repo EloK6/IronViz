@@ -9,7 +9,8 @@ class Indicators extends Component {
     super(props);
     this.state = {
       xAxisValue: "happy planet index",
-      yAxisValue: "GDP per capita (PPP)"
+      yAxisValue: "GDP per capita (PPP)",
+      rAxisValue: "population"
     };
   }
 
@@ -22,6 +23,10 @@ class Indicators extends Component {
     this.setState({ yAxisValue: selection2 });
   };
 
+  handleDataRAxis = selection3 => {
+    this.setState({ rAxisValue: selection3 });
+  };
+
   render() {
     return (
       <div className="Indicators">
@@ -30,10 +35,12 @@ class Indicators extends Component {
           <SelectAxis
             handleDataX={this.handleDataXAxis}
             handleDataY={this.handleDataYAxis}
+            handleDataR={this.handleDataRAxis}
           />
           <BubbleChart
             xAxisValue={this.state.xAxisValue}
             yAxisValue={this.state.yAxisValue}
+            rAxisValue={this.state.rAxisValue}
             width={800}
             height={600}
           />
