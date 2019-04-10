@@ -20,11 +20,15 @@ class BubbleChart extends Component {
 
   componentDidMount() {
     this.updateChart();
+    this.renderXAxis();
+    // this.renderYAxis();
     this.getData();
   }
 
   componentDidUpdate() {
     this.updateChart();
+    this.renderXAxis();
+    // this.renderYAxis();
   }
 
   updateChart() {
@@ -82,18 +86,6 @@ class BubbleChart extends Component {
       .domain([this.state.data.map(d => d.region)])
       .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
 
-    // Add X axis
-    var x = d3
-      .scaleLinear()
-      .domain([0, xMax])
-      .range([0, this.props.width]);
-
-    //Add Y axis
-    var y = d3
-      .scaleLinear()
-      .domain([0, yMax])
-      .range([this.props.height, 0]);
-
     //dataviz
     d3.select(this.svgEl)
       .selectAll("circle")
@@ -116,6 +108,53 @@ class BubbleChart extends Component {
       .style("opacity", 0.65)
       .style("stroke", "white");
   }
+
+  //renderXAxis
+  renderXAxis() {
+    const xAxisValue = this.props.xAxisValue;
+    const innerMargin = { top: 20, bottom: 40, left: 20, right: 20 };
+    const innerWidth = this.props.width - innerMargin.left - innerMargin.right;
+
+    let xMax = d3.max(
+      this.state.data.map(d =>
+        d.indicator_id.find(indic => indic.key === xAxisValue)
+      ),
+      d => d.value
+    );
+
+    let xScale = d3
+      .scaleLinear()
+      .domain([0, xMax])
+      .range([innerMargin.left, innerMargin.left + innerWidth]);
+
+    const axis = d3.axisBottom(xScale);
+    d3.select(this.svgEl).call(axis);
+  }
+
+  //renderYAxis
+  // renderYAxis() {
+  //   const yAxisValue = this.props.yAxisValue;
+  //   const innerMargin = { top: 20, bottom: 40, left: 20, right: 20 };
+  //   const innerHeight =
+  //     this.props.height - innerMargin.top - innerMargin.bottom;
+
+  //   let yMax = d3.max(
+  //     this.state.data.map(d =>
+  //       d.indicator_id.find(indic => indic.key === yAxisValue)
+  //     ),
+  //     d => d.value
+  //   );
+
+  //   let yScale = d3
+  //     .scaleLinear()
+  //     .domain([0, yMax])
+  //     .range([innerMargin.top + innerHeight, innerMargin.top]);
+
+  //   const axis = d3.axisLeft(yScale);
+  //   d3.select(this.svgEl)
+  //     .attr("transform", "translate(20, 20)")
+  //     .call(axis);
+  // }
 
   render() {
     let points = this.state.data.map(d => (
