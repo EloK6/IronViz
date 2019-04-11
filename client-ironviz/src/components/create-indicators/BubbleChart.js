@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import axios from "axios";
-// import Axis from "./Axis";
 
 class BubbleChart extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ class BubbleChart extends Component {
     this.state = {
       data: []
     };
-    this.innerMargin = { top: 20, bottom: 40, left: 20, right: 20 };
+    this.innerMargin = { top: 20, bottom: 40, left: 50, right: 20 };
     this.innerWidth =
       this.props.width - this.innerMargin.left - this.innerMargin.right;
     this.innerHeight =
@@ -155,16 +154,11 @@ class BubbleChart extends Component {
           ref={element => (this.svgEl = element)}
         >
           <g
-            transform={`translate(${this.innerMargin.left}, ${this.props
-              .height - this.innerMargin.bottom})`}
+            transform={`translate(${0}, ${this.props.height -
+              this.innerMargin.bottom})`}
             ref="g1"
           />
-          <g
-            transform={`translate(${this.innerMargin.left}, ${
-              this.innerMargin.top
-            })`}
-            ref="g2"
-          />
+          <g transform={`translate(${this.innerMargin.left}, ${0})`} ref="g2" />
           {points}
         </svg>
       </div>
