@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import * as d3 from "d3";
 import axios from "axios";
+import * as d3 from "d3";
+import d3Tip from "d3-tip";
 
 class BubbleChart extends Component {
   constructor(props) {
@@ -65,11 +66,25 @@ class BubbleChart extends Component {
       .scaleOrdinal()
       .domain([this.state.data.map(d => d.region)])
       .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
+    //Tooltip
+    const tip = d3Tip();
+    tip.attr("class", "d3-tip").html(d => {
+      console.log(d);
+      return `<div>${d.name}</div>`;
+    });
 
     //dataviz
-    d3.select(this.svgEl)
+    let viz = d3.select(this.svgEl);
+    viz.call(tip);
+    viz
       .selectAll("circle")
       .data(this.state.data)
+      .on("mouseover", function(d) {
+        tip.show(d, this);
+      })
+      .on("mouseout", function(d) {
+        tip.hide(d, this);
+      })
       .transition()
       .duration(2000)
       .attr("cx", d =>
