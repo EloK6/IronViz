@@ -277,7 +277,7 @@ body {
   width: 200px;
 }
 
-/* ----------//////////INDICATORS//////////---------- */
+/* ----------//////////BUBBLECHART//////////---------- */
 .Indicators {
   display: flex;
   flex-direction: column;
@@ -288,5 +288,19 @@ body {
   flex: 1;
 }
 
-.BubbleChart {
+.BubbleChart__Hover {
+  background-color: #051111;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  opacity: 0.8;
+}
+.BubbleChart__Hover :before {
+  width: 0;
+  height: 0;
+  bottom: -10px;
+  position: absolute;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid black;
 }

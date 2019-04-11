@@ -70,7 +70,7 @@ class BubbleChart extends Component {
     const tip = d3Tip();
     tip.attr("class", "d3-tip").html(d => {
       console.log(d);
-      return `<div>${d.name}</div>`;
+      return `<div class="BubbleChart__Hover">${d.name}</div>`;
     });
 
     //dataviz
