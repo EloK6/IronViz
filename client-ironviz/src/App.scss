@@ -120,7 +120,7 @@ body {
 // }
 
 .BoxCountries > ul {
-  margin: 0 auto;
+  padding-left: 0px;
 }
 
 .BoxCountries__card > li {
@@ -152,13 +152,14 @@ body {
 .BoxCountries__card > li > h5 {
   text-align: center;
 }
-
+.Countries__content {
+  margin: 30px;
+}
 .Countries__content__Countries {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin: 20px;
+  justify-content: space-between;
 }
 
 .BoxCountries__card:hover {
@@ -197,6 +198,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
+
 .CountriesDetail__content {
   flex: 1;
   background-image: url("/assets/countries.png");
@@ -206,6 +208,7 @@ body {
   flex: 1;
   // opacity: 0.5;
 }
+
 .CountriesDetail__card {
   border: 1px solid #a9a9a9;
   box-shadow: 3px 3px 6px 0 #a9a9a9;
