@@ -4,12 +4,14 @@ import Footer from "../Footer";
 import axios from "axios";
 import BoxCountries from "./BoxCountries";
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 // import BoxHover from "./BoxHover";
 
 class Countries extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      searchString: "",
       listOfCountries: []
     };
   }
@@ -26,28 +28,42 @@ class Countries extends Component {
     this.getAllCountries();
   }
 
+  updateSearch = oneCountry => {
+    this.setState({ searchString: oneCountry });
+  };
+
   render() {
     return (
       <div className="Countries">
         <NavBar />
 
         <div className="Countries__content">
-          {this.state.listOfCountries.map(eachCountry => {
-            return (
-              <div key={eachCountry._id}>
-                <Link
-                  style={{ textDecoration: "none" }}
-                  to={`/countries/${eachCountry._id}`}
-                >
-                  <BoxCountries
-                    flag={eachCountry.flag}
-                    iso3={eachCountry.iso3}
-                    country={eachCountry.name}
-                  />
-                </Link>
-              </div>
-            );
-          })}
+          <div className="Countries__content__Search">
+            <SearchBar updateString={this.updateSearch} />
+          </div>
+
+          <div className="Countries__content__Countries">
+            {this.state.listOfCountries
+              .filter(searchString => {
+                return searchString.name.toLowerCase();
+              })
+              .map(eachCountry => {
+                return (
+                  <div key={eachCountry._id}>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to={`/countries/${eachCountry._id}`}
+                    >
+                      <BoxCountries
+                        flag={eachCountry.flag}
+                        iso3={eachCountry.iso3}
+                        country={eachCountry.name}
+                      />
+                    </Link>
+                  </div>
+                );
+              })}
+          </div>
         </div>
 
         {/* <div className="Countries__content">

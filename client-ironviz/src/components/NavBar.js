@@ -41,7 +41,7 @@ class NavBar extends Component {
               </li>
               <li className="nav-item borderLeftRight">
                 <Link to="/own-chart" className="nav-link">
-                  Main indicators
+                  Make your own chart
                 </Link>
               </li>
               {/* <li className="nav-item dropdown">
