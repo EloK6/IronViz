@@ -16,7 +16,6 @@ class Indicators extends Component {
 
   handleDataXAxis = selection => {
     this.setState({ xAxisValue: selection });
-    console.log("hellooo", selection);
   };
 
   handleDataYAxis = selection2 => {
@@ -41,7 +40,7 @@ class Indicators extends Component {
             xAxisValue={this.state.xAxisValue}
             yAxisValue={this.state.yAxisValue}
             rAxisValue={this.state.rAxisValue}
-            width={800}
+            width={960}
             height={600}
           />
         </div>

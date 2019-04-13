@@ -44,8 +44,10 @@ class Countries extends Component {
 
           <div className="Countries__content__Countries">
             {this.state.listOfCountries
-              .filter(searchString => {
-                return searchString.name.toLowerCase();
+              .filter(country => {
+                return country.name
+                  .toLowerCase()
+                  .includes(this.state.searchString.toLowerCase());
               })
               .map(eachCountry => {
                 return (
