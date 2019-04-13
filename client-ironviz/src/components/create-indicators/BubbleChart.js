@@ -173,6 +173,7 @@ class BubbleChart extends Component {
     return (
       <div className="BubbleChart">
         <svg
+          className="svgContent"
           preserveAspectRatio="xMidYMid meet"
           viewBox={`0 0 ${this.props.width} ${this.props.height}`}
           width={this.props.width}
