@@ -297,7 +297,7 @@ body {
 .Indicators {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 // .Indicators__dataviz {
@@ -306,24 +306,32 @@ body {
 .Indicators__dataviz {
   display: flex;
   flex-direction: row;
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
+  flex: 1;
 }
 
 .BubbleChart {
   display: flex;
   justify-content: center;
   width: 75%;
+  @media (max-width: 800px) {
+    width: 100%;
+  }
   height: 100%;
-  background-color: #13f3b9;
 }
 
 .SelectAxis {
   width: 25%;
+  @media (max-width: 800px) {
+    width: 100%;
+  }
   height: 100%;
   font-size: 0.9em;
-  overflow: scroll;
+  overflow: auto;
   padding-top: 10px;
   box-shadow: 3px 0px 6px 0 #a9a9a9;
-  background-color: #e4e6e6;
 }
 
 .svgContent {
@@ -348,6 +356,8 @@ body {
     transform: translate(-50%, 0);
     font-size: 25%;
   }
+
+  pointer-events: none;
 }
 
 .SelectAxis__explanation {
