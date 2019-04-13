@@ -19,7 +19,7 @@ class Chart extends Component {
       .force(
         "y",
         d3
-          .forceX()
+          .forceY()
           .strength(forceStrength)
           .y(center.y)
       )
@@ -42,7 +42,8 @@ class Chart extends Component {
   }
 
   shouldComponentUpdate() {
-    //make React ignore this component
+    // we will handle moving the nodes on our own with d3.js
+    // make React ignore this component
     return false;
   }
 
@@ -53,55 +54,89 @@ class Chart extends Component {
   };
 
   ticked() {
-    this.state.g.selectAll('.bubble')
-      .attr('cx', d => d.x)
-      .attr('cy', d => d.y)
+    this.state.g
+      .selectAll(".bubble")
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y);
   }
 
   charge(d) {
-    return -this.props.forceStrength * (d.radius ** 2.0)
+    return -this.props.forceStrength * d.radius ** 2.0;
   }
 
-  regroupBubbles = (groupByYear) => {
-    const { forceStrength, yearCenters, center } = this.props
+  regroupBubbles = groupByYear => {
+    const { forceStrength, yearCenters, center } = this.props;
     if (groupByYear) {
-      this.simulation.force('x', d3.forceX().strength(forceStrength).x(d => yearCenters[d.year].x))
-                      .force('y', d3.forceY().strength(forceStrength).y(d => yearCenters[d.year].y))
+      this.simulation
+        .force(
+          "x",
+          d3
+            .forceX()
+            .strength(forceStrength)
+            .x(d => yearCenters[d.year].x)
+        )
+        .force(
+          "y",
+          d3
+            .forceY()
+            .strength(forceStrength)
+            .y(d => yearCenters[d.year].y)
+        );
     } else {
-      this.simulation.force('x', d3.forceX().strength(forceStrength).x(center.x))
-                      .force('y', d3.forceY().strength(forceStrength).y(center.y))
+      this.simulation
+        .force(
+          "x",
+          d3
+            .forceX()
+            .strength(forceStrength)
+            .x(center.x)
+        )
+        .force(
+          "y",
+          d3
+            .forceY()
+            .strength(forceStrength)
+            .y(center.y)
+        );
     }
-    this.simulation.alpha(1).restart()
-    renderBubbles(data) {
-      const bubbles = this.state.g.selectAll('.bubble').data(data, d => d.id)
-  
-      // Exit
-      bubbles.exit().remove()
-  
-      // Enter
-      const bubblesE = bubbles.enter().append('circle')
-        .classed('bubble', true)
-        .attr('r', 0)
-        .attr('cx', d => d.x)
-        .attr('cy', d => d.y)
-        .attr('fill', d => fillColor(d.group))
-        .attr('stroke', d => d3.rgb(fillColor(d.group)).darker())
-        .attr('stroke-width', 2)
-        .on('mouseover', showDetail)  // eslint-disable-line
-        .on('mouseout', hideDetail) // eslint-disable-line
-  
-      bubblesE.transition().duration(2000).attr('r', d => d.radius).on('end', () => {
-        this.simulation.nodes(data)
-        .alpha(1)
-        .restart()
-      })
-    }
+    this.simulation.alpha(1).restart();
+  };
+
+  renderBubbles(data) {
+    const bubbles = this.state.g.selectAll(".bubble").data(data, d => d.id);
+
+    // Exit
+    bubbles.exit().remove();
+
+    // Enter
+    const bubblesE = bubbles
+      .enter()
+      .append("circle")
+      .classed("bubble", true)
+      .attr("r", 0)
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y)
+      .attr("fill", d => d.group)
+      .attr("stroke", d => d3.rgb(d.group).darker())
+      .attr("stroke-width", 2)
+      .on("mouseover", showDetail) // eslint-disable-line
+      .on("mouseout", hideDetail); // eslint-disable-line
+
+    bubblesE
+      .transition()
+      .duration(2000)
+      .attr("r", d => d.radius)
+      .on("end", () => {
+        this.simulation
+          .nodes(data)
+          .alpha(1)
+          .restart();
+      });
   }
-    render() {
-      return (
-        <g ref={this.onRef} className="bubbles" />
-      )
-    }
+
+  render() {
+    return <g ref={this.onRef} className="bubbles" />;
+  }
 }
 
 export default Chart;
