@@ -5,74 +5,103 @@ import * as d3 from "d3";
 class Chart extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
-    this.updateChart();
-    // this.getData();
-  }
-
-  componentDidUpdate() {
-    this.updateChart();
-  }
-
-  updateChart() {
-    var numNodes = 100;
-    var nodes = d3.range(numNodes).map(function(d) {
-      return { radius: Math.random() * 25 };
-    });
-
-    let simulation = d3
-      .forceSimulation(nodes)
-      .force("charge", d3.forceManyBody().strength(5))
+    const { forceStrength, center } = props;
+    this.simulation = d3
+      .forceSimulation()
+      .velocityDecay(0.2)
       .force(
-        "center",
-        d3.forceCenter(this.props.width / 2, this.props.height / 2)
+        "x",
+        d3
+          .forceX()
+          .strength(forceStrength)
+          .x(center.x)
       )
       .force(
-        "collision",
-        d3.forceCollide().radius(function(d) {
-          return d.radius;
-        })
+        "y",
+        d3
+          .forceX()
+          .strength(forceStrength)
+          .y(center.y)
       )
-      .on("tick", ticked);
+      .force("charge", d3.forceManyBody().strength(this.charge.bind(this)))
+      .on("tick", this.ticked.bind(this))
+      .stop();
+  }
 
-    function ticked() {
-      var u = d3
-        .select(this.svgEl)
-        .selectAll("circle")
-        .data(nodes);
+  state = {
+    g: null
+  };
 
-      u.enter()
-        .append("circle")
-        .attr("r", function(d) {
-          return d.radius;
-        })
-        .merge(u)
-        .attr("cx", function(d) {
-          return d.x;
-        })
-        .attr("cy", function(d) {
-          return d.y;
-        });
-
-      u.exit().remove();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data !== this.props.data) {
+      this.renderBubbles(nextProps.data);
+    }
+    if (nextProps.groupByYear !== this.props.groupByYear) {
+      this.regroupBubbles(nextProps.groupByYear);
     }
   }
-  render() {
-    return (
-      <div className="Chart">
-        <svg
-          preserveAspectRatio="xMidYMid meet"
-          viewBox={`0 0 ${this.props.width} ${this.props.height}`}
-          width={this.props.width}
-          height={this.props.height}
-          ref={element => (this.svgEl = element)}
-        />
-      </div>
-    );
+
+  shouldComponentUpdate() {
+    //make React ignore this component
+    return false;
   }
+
+  onRef = ref => {
+    this.setState({ g: d3.select(ref) }, () =>
+      this.renderBubbles(this.props.data)
+    );
+  };
+
+  ticked() {
+    this.state.g.selectAll('.bubble')
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
+  }
+
+  charge(d) {
+    return -this.props.forceStrength * (d.radius ** 2.0)
+  }
+
+  regroupBubbles = (groupByYear) => {
+    const { forceStrength, yearCenters, center } = this.props
+    if (groupByYear) {
+      this.simulation.force('x', d3.forceX().strength(forceStrength).x(d => yearCenters[d.year].x))
+                      .force('y', d3.forceY().strength(forceStrength).y(d => yearCenters[d.year].y))
+    } else {
+      this.simulation.force('x', d3.forceX().strength(forceStrength).x(center.x))
+                      .force('y', d3.forceY().strength(forceStrength).y(center.y))
+    }
+    this.simulation.alpha(1).restart()
+    renderBubbles(data) {
+      const bubbles = this.state.g.selectAll('.bubble').data(data, d => d.id)
+  
+      // Exit
+      bubbles.exit().remove()
+  
+      // Enter
+      const bubblesE = bubbles.enter().append('circle')
+        .classed('bubble', true)
+        .attr('r', 0)
+        .attr('cx', d => d.x)
+        .attr('cy', d => d.y)
+        .attr('fill', d => fillColor(d.group))
+        .attr('stroke', d => d3.rgb(fillColor(d.group)).darker())
+        .attr('stroke-width', 2)
+        .on('mouseover', showDetail)  // eslint-disable-line
+        .on('mouseout', hideDetail) // eslint-disable-line
+  
+      bubblesE.transition().duration(2000).attr('r', d => d.radius).on('end', () => {
+        this.simulation.nodes(data)
+        .alpha(1)
+        .restart()
+      })
+    }
+  }
+    render() {
+      return (
+        <g ref={this.onRef} className="bubbles" />
+      )
+    }
 }
 
 export default Chart;
