@@ -3,28 +3,6 @@ import * as d3 from "d3";
 import axios from "axios";
 // import _ from "lodash";
 
-const nodeCount = 195;
-const nodes = [];
-for (let i = 0; i < nodeCount; i++) {
-  nodes.push({
-    r: Math.random() * 5 + 2,
-    x: 0,
-    y: 0
-  });
-}
-
-const links = [];
-for (let i = 0; i < nodeCount; i++) {
-  let target = 0;
-  do {
-    target = Math.floor(Math.random() * nodeCount);
-  } while (target == i);
-  links.push({
-    source: i,
-    target
-  });
-}
-
 class Chart extends React.Component {
   constructor(props) {
     super(props);
@@ -33,38 +11,38 @@ class Chart extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.force = d3
-      .forceSimulation(this.state.nodes)
-      .force("charge", d3.forceManyBody().strength(this.props.forceStrength))
-      .force("x", d3.forceX(this.props.width / 2))
-      .force("y", d3.forceY(this.props.height / 2));
+  // componentDidMount() {
+  //   this.force = d3
+  //     .forceSimulation(this.state.nodes)
+  //     .force("charge", d3.forceManyBody().strength(this.props.forceStrength))
+  //     .force("x", d3.forceX(this.props.width / 2))
+  //     .force("y", d3.forceY(this.props.height / 2));
 
-    this.force.on("tick", () =>
-      this.setState({
-        nodes: this.state.nodes
-      })
-    );
-  }
+  //   this.force.on("tick", () =>
+  //     this.setState({
+  //       nodes: this.state.nodes
+  //     })
+  //   );
+  // }
 
-  componentWillUnmount() {
-    this.force.stop();
-  }
+  // componentWillUnmount() {
+  //   this.force.stop();
+  // }
 
-  render() {
-    return (
-      <svg
-        width={this.props.width}
-        height={this.props.height}
-        viewBox={`0 0 ${this.props.width} ${this.props.height}`}
-        preserveAspectRatio="xMidYMid meet"
-      >
-        {this.state.nodes.map((node, index) => (
-          <circle r={node.r} cx={node.x} cy={node.y} fill="red" key={index} />
-        ))}
-      </svg>
-    );
-  }
+  // render() {
+  //   return (
+  //     <svg
+  //       width={this.props.width}
+  //       height={this.props.height}
+  //       viewBox={`0 0 ${this.props.width} ${this.props.height}`}
+  //       preserveAspectRatio="xMidYMid meet"
+  //     >
+  //       {this.state.nodes.map((node, index) => (
+  //         <circle r={node.r} cx={node.x} cy={node.y} fill="red" key={index} />
+  //       ))}
+  //     </svg>
+  //   );
+  // }
 }
 
 Chart.defaultProps = {
