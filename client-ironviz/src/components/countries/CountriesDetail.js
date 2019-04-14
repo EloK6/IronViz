@@ -24,7 +24,6 @@ class CountriesDetail extends Component {
           this.setState({
             flag: countryResp.data.flag,
             name: countryResp.data.name,
-            valueGini: this.getIndicatorValue(indicResp.data, "GINI index"),
             valueHappyP: this.getIndicatorValue(
               indicResp.data,
               "happy planet index"
@@ -45,21 +44,17 @@ class CountriesDetail extends Component {
               indicResp.data,
               "GDP per capita (PPP)"
             ),
-            unemployment: this.getIndicatorValue(
+            education: this.getIndicatorValue(
               indicResp.data,
-              "unemployment (%)"
+              "education expenditure% of GDP"
+            ),
+            school: this.getIndicatorValue(
+              indicResp.data,
+              "school life expectancy (YEARS)"
             ),
             govSpending: this.getIndicatorValue(
               indicResp.data,
-              "government spending score"
-            ),
-            polRights: this.getIndicatorValue(
-              indicResp.data,
-              "political rights score"
-            ),
-            civilLib: this.getIndicatorValue(
-              indicResp.data,
-              "civil liberties score"
+              "government expenditure (% of GDP)"
             ),
             judicial: this.getIndicatorValue(
               indicResp.data,
@@ -91,6 +86,22 @@ class CountriesDetail extends Component {
       );
   };
 
+  getColor = value => {
+    let colorValue = "";
+    if (value <= 19) {
+      colorValue = "#a20643";
+    } else if (value >= 20 && value <= 39) {
+      colorValue = "#fa9d5a";
+    } else if (value >= 40 && value <= 59) {
+      colorValue = "#fcf6ae";
+    } else if (value >= 60 && value <= 79) {
+      colorValue = "#91d068";
+    } else if (value >= 80 && value <= 100) {
+      colorValue = "#016d3a";
+    }
+    return colorValue;
+  };
+
   componentDidMount() {
     this.getOneCountry();
   }
@@ -105,10 +116,9 @@ class CountriesDetail extends Component {
       worldHappiness,
       sustainableDev,
       gpdCapita,
-      unemployment,
+      education,
+      school,
       govSpending,
-      polRights,
-      civilLib,
       judicial,
       govIntegrity,
       propertyRight,
@@ -138,20 +148,14 @@ class CountriesDetail extends Component {
             <div className="CountriesDetail__card__table-global">
               <table className="CountriesDetail__card__table">
                 <tr>
-                  <td>Gini</td>
-                  <td div className="CountriesDetail__background">
-                    <div
-                      className="CountriesDetail__fill"
-                      style={{ width: valueGini + "%" }}
-                    />
-                  </td>
-                </tr>
-                <tr>
                   <td>Happy planet</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: valueHappyP + "%" }}
+                      style={{
+                        width: valueHappyP * 2 + "%",
+                        backgroundColor: `${this.getColor(valueHappyP * 2)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -160,7 +164,10 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: humanDev + "%" }}
+                      style={{
+                        width: humanDev * 100 + "%",
+                        backgroundColor: `${this.getColor(humanDev * 100)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -169,7 +176,10 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: worldHappiness + "%" }}
+                      style={{
+                        width: worldHappiness * 10 + "%",
+                        backgroundColor: `${this.getColor(worldHappiness * 10)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -178,7 +188,10 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: sustainableDev + "%" }}
+                      style={{
+                        width: sustainableDev + "%",
+                        backgroundColor: `${this.getColor(sustainableDev)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -187,16 +200,36 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: (gpdCapita * 100) / 160526 + "%" }}
+                      style={{
+                        width: gpdCapita * 0.00062295 + "%",
+                        backgroundColor: `${this.getColor(
+                          gpdCapita * 0.00062295
+                        )}`
+                      }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Unemployment</td>
+                  <td>Education</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: unemployment + "%" }}
+                      style={{
+                        width: education * 10 + "%",
+                        backgroundColor: `${this.getColor(education * 10)}`
+                      }}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>School</td>
+                  <td div className="CountriesDetail__background">
+                    <div
+                      className="CountriesDetail__fill"
+                      style={{
+                        width: school * 5 + "%",
+                        backgroundColor: `${this.getColor(school * 5)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -205,36 +238,24 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: govSpending + "%" }}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Political rights score </td>
-                  <td div className="CountriesDetail__background">
-                    <div
-                      className="CountriesDetail__fill"
-                      style={{ width: polRights * (100 / 7) + "%" }}
+                      style={{
+                        width: govSpending + "%",
+                        backgroundColor: `${this.getColor(govSpending)}`
+                      }}
                     />
                   </td>
                 </tr>
               </table>
               <table className="CountriesDetail__card__table">
                 <tr>
-                  <td>Civil liberties</td>
-                  <td div className="CountriesDetail__background">
-                    <div
-                      className="CountriesDetail__fill"
-                      style={{ width: civilLib * (100 / 7) + "%" }}
-                    />
-                  </td>
-                </tr>
-                <tr>
                   <td>Judicial effectiveness score</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: judicial + "%" }}
+                      style={{
+                        width: judicial + "%",
+                        backgroundColor: `${this.getColor(judicial)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -243,7 +264,10 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: govIntegrity + "%" }}
+                      style={{
+                        width: govIntegrity + "%",
+                        backgroundColor: `${this.getColor(govIntegrity)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -252,16 +276,22 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: propertyRight + "%" }}
+                      style={{
+                        width: propertyRight + "%",
+                        backgroundColor: `${this.getColor(propertyRight)}`
+                      }}
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>Tax burden score</td>
+                  <td>Tax</td>
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: tax + "%" }}
+                      style={{
+                        width: 100 - tax + "%",
+                        backgroundColor: `${this.getColor(100 - tax)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -270,7 +300,10 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: economicFreedom + "%" }}
+                      style={{
+                        width: economicFreedom + "%",
+                        backgroundColor: `${this.getColor(economicFreedom)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -279,7 +312,10 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: financialFreedom + "%" }}
+                      style={{
+                        width: financialFreedom + "%",
+                        backgroundColor: `${this.getColor(financialFreedom)}`
+                      }}
                     />
                   </td>
                 </tr>
@@ -288,7 +324,10 @@ class CountriesDetail extends Component {
                   <td div className="CountriesDetail__background">
                     <div
                       className="CountriesDetail__fill"
-                      style={{ width: women + "%" }}
+                      style={{
+                        width: women + "%",
+                        backgroundColor: `${this.getColor(women)}`
+                      }}
                     />
                   </td>
                 </tr>
