@@ -155,6 +155,7 @@ body {
 .Countries__content {
   margin: 30px;
   flex: 1;
+  min-height: 100vh;
 }
 .Countries__content__Countries {
   display: flex;

@@ -154,17 +154,6 @@ class BubbleChart extends Component {
     d3.select(this.refs.g2).call(axis);
   }
 
-  //XAxis-Text
-  // renderTextXAxis() {
-  //   d3.select(this.refs.g1)
-  //     .append("text")
-  //     .attr("y", 120)
-  //     .attr("x", 120)
-  //     .attr("dy", "1em")
-  //     .style("text-anchor", "middle")
-  //     .text("Value");
-  // }
-
   render() {
     let points = this.state.data.map(d => (
       <circle cx="0" cy="0" r="0" style={{ fill: "white" }} />
