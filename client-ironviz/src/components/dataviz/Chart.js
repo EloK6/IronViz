@@ -1,141 +1,113 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
-// import axios from "axios";
+import axios from "axios";
 
 class Chart extends Component {
   constructor(props) {
     super(props);
-    const { forceStrength, center } = props;
-    this.simulation = d3
-      .forceSimulation()
-      .velocityDecay(0.2)
-      .force(
-        "x",
-        d3
-          .forceX()
-          .strength(forceStrength)
-          .x(center.x)
-      )
-      .force(
-        "y",
-        d3
-          .forceY()
-          .strength(forceStrength)
-          .y(center.y)
-      )
-      .force("charge", d3.forceManyBody().strength(this.charge.bind(this)))
-      .on("tick", this.ticked.bind(this))
-      .stop();
   }
 
-  state = {
-    g: null
-  };
+  componentDidMount() {
+    const url =
+      "https://raw.githubusercontent.com/DealPete/forceDirected/master/countries.json";
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data !== this.props.data) {
-      this.renderBubbles(nextProps.data);
-    }
-    if (nextProps.groupByYear !== this.props.groupByYear) {
-      this.regroupBubbles(nextProps.groupByYear);
-    }
-  }
+    axios.get(url).then(res => {
+      const data = res.data;
 
-  shouldComponentUpdate() {
-    // we will handle moving the nodes on our own with d3.js
-    // make React ignore this component
-    return false;
-  }
+      const width = 640,
+        height = 480;
 
-  onRef = ref => {
-    this.setState({ g: d3.select(ref) }, () =>
-      this.renderBubbles(this.props.data)
-    );
-  };
+      //Initializing chart
+      const chart = d3
+        .select(".chart")
+        .attr("width", width)
+        .attr("height", height);
 
-  ticked() {
-    this.state.g
-      .selectAll(".bubble")
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
-  }
+      //Creating tooltip
+      const tooltip = d3
+        .select(".container")
+        .append("div")
+        .attr("class", "tooltip")
+        .html("Tooltip");
 
-  charge(d) {
-    return -this.props.forceStrength * d.radius ** 2.0;
-  }
+      //Initializing force simulation
+      const simulation = d3
+        .forceSimulation()
+        .force("charge", d3.forceManyBody())
+        .force("collide", d3.forceCollide())
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("y", d3.forceY(0))
+        .force("x", d3.forceX(0));
 
-  regroupBubbles = groupByYear => {
-    const { forceStrength, yearCenters, center } = this.props;
-    if (groupByYear) {
-      this.simulation
-        .force(
-          "x",
+      //Drag functions
+      const dragStart = d => {
+        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      };
+
+      const drag = d => {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+      };
+
+      const dragEnd = d => {
+        if (!d3.event.active) simulation.alphaTarget(0);
+        d.fx = null;
+        d.fy = null;
+      };
+
+      //Creating nodes
+      const node = d3
+        .select(".chartContainer")
+        .selectAll("div")
+        .data(data.nodes)
+        .enter()
+        .append("div")
+        .attr("class", d => {
+          return "flag flag-" + d.code;
+        })
+        .call(
           d3
-            .forceX()
-            .strength(forceStrength)
-            .x(d => yearCenters[d.year].x)
+            .drag()
+            .on("start", dragStart)
+            .on("drag", drag)
+            .on("end", dragEnd)
         )
-        .force(
-          "y",
-          d3
-            .forceY()
-            .strength(forceStrength)
-            .y(d => yearCenters[d.year].y)
-        );
-    } else {
-      this.simulation
-        .force(
-          "x",
-          d3
-            .forceX()
-            .strength(forceStrength)
-            .x(center.x)
-        )
-        .force(
-          "y",
-          d3
-            .forceY()
-            .strength(forceStrength)
-            .y(center.y)
-        );
-    }
-    this.simulation.alpha(1).restart();
-  };
+        .on("mouseover", d => {
+          tooltip
+            .html(d.country)
+            .style("left", d3.event.pageX + 5 + "px")
+            .style("top", d3.event.pageY + 5 + "px")
+            .style("opacity", 0.9);
+        })
+        .on("mouseout", () => {
+          tooltip
+            .style("opacity", 0)
+            .style("left", "0px")
+            .style("top", "0px");
+        });
 
-  renderBubbles(data) {
-    const bubbles = this.state.g.selectAll(".bubble").data(data, d => d.id);
+      //Setting location when ticked
+      const ticked = () => {
+        node.attr("style", d => {
+          return "left: " + d.x + "px; top: " + (d.y + 72) + "px";
+        });
+      };
 
-    // Exit
-    bubbles.exit().remove();
-
-    // Enter
-    const bubblesE = bubbles
-      .enter()
-      .append("circle")
-      .classed("bubble", true)
-      .attr("r", 0)
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y)
-      .attr("fill", d => d.group)
-      .attr("stroke", d => d3.rgb(d.group).darker())
-      .attr("stroke-width", 2)
-      .on("mouseover", showDetail) // eslint-disable-line
-      .on("mouseout", hideDetail); // eslint-disable-line
-
-    bubblesE
-      .transition()
-      .duration(2000)
-      .attr("r", d => d.radius)
-      .on("end", () => {
-        this.simulation
-          .nodes(data)
-          .alpha(1)
-          .restart();
-      });
+      //Starting simulation
+      simulation.nodes(data.nodes).on("tick", ticked);
+    });
   }
 
   render() {
-    return <g ref={this.onRef} className="bubbles" />;
+    return (
+      <div className="container">
+        <div className="chartContainer">
+          <svg className="chart" />
+        </div>
+      </div>
+    );
   }
 }
 
