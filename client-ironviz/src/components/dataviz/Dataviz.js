@@ -9,7 +9,7 @@ class Dataviz extends Component {
       <div className="Dataviz">
         <NavBar />
         <div className="Dataviz__content">
-          <Chart width={960} height={600} forceStrength={-20} />
+          <Chart nodes={this.props.nodes} />
         </div>
         <Footer />
       </div>
