@@ -117,6 +117,22 @@ class SelectAxis extends Component {
           );
           break;
 
+        case "political rights score":
+          return (
+            <div>
+              <strong>Political rights score</strong> from 7 to 1 (best quote).
+            </div>
+          );
+          break;
+
+        case "civil liberties score":
+          return (
+            <div>
+              <strong>Civil liberties score </strong> from 7 to 1 (best quote).
+            </div>
+          );
+          break;
+
         case "judicial effectiveness score":
           return (
             <div>
@@ -244,6 +260,12 @@ class SelectAxis extends Component {
             >
               <option value="GDP per capita (PPP)" selected>
                 GDP per capita
+              </option>
+              <option value="political rights score">
+                political rights score
+              </option>
+              <option value="civil liberties score">
+                civil liberties score
               </option>
               <option value="judicial effectiveness score">
                 judicial effectiveness score
