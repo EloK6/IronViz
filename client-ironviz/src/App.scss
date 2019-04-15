@@ -161,7 +161,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 // .BoxCountries__card:hover {
@@ -376,4 +376,9 @@ body {
   position: absolute;
   background-color: lightgrey;
   padding: 10px;
+}
+
+.Dataviz__content {
+  display: flex;
+  flex: 1;
 }

@@ -1,54 +1,96 @@
 import React, { Component } from "react";
 import * as d3 from "d3";
 import axios from "axios";
-// import _ from "lodash";
+import _ from "lodash";
+
+function Node() {
+  const MAXVALUE = 1000000;
+  this.x = 0;
+  this.y = 0;
+  this.value = Math.random() * MAXVALUE;
+  this.radius = Math.random() * 25;
+}
+const json = [...Array(165)].map(el => new Node());
 
 class Chart extends React.Component {
+  static defaultProps = {
+    width: 800,
+    height: 600,
+    forceStrength: 0.02,
+    velocityDecay: 0.1
+  };
+
   constructor(props) {
     super(props);
+
+    const { width, height, forceStrength, velocityDecay } = this.props;
+
     this.state = {
-      nodes: this.props.nodes
+      nodes: json
     };
+
+    //
+    // d3-force simulation
+    //
+
+    function charge(d) {
+      return -forceStrength * Math.pow(d.radius, 2);
+    }
+    this.nodes = _.cloneDeep(this.state.nodes);
+    this.simulation = d3
+      .forceSimulation(this.nodes)
+      .velocityDecay(velocityDecay)
+      .force(
+        "x",
+        d3
+          .forceX()
+          .strength(forceStrength)
+          .x(d => {
+            return width / 2;
+          })
+      )
+      .force(
+        "y",
+        d3
+          .forceY()
+          .strength(forceStrength)
+          .y(d => {
+            return height / 2;
+          })
+      )
+      .force("charge", d3.forceManyBody().strength(charge))
+      .force("collision", d3.forceCollide().radius(d => d.radius))
+      .on("tick", this.ticked);
   }
 
-  // componentDidMount() {
-  //   this.force = d3
-  //     .forceSimulation(this.state.nodes)
-  //     .force("charge", d3.forceManyBody().strength(this.props.forceStrength))
-  //     .force("x", d3.forceX(this.props.width / 2))
-  //     .force("y", d3.forceY(this.props.height / 2));
+  ticked = () => {
+    // https://stackoverflow.com/a/46865234/133327
+    this.setState({ nodes: _.cloneDeep(this.nodes) });
+  };
 
-  //   this.force.on("tick", () =>
-  //     this.setState({
-  //       nodes: this.state.nodes
-  //     })
-  //   );
-  // }
+  render() {
+    const { width, height } = this.props;
 
-  // componentWillUnmount() {
-  //   this.force.stop();
-  // }
-
-  // render() {
-  //   return (
-  //     <svg
-  //       width={this.props.width}
-  //       height={this.props.height}
-  //       viewBox={`0 0 ${this.props.width} ${this.props.height}`}
-  //       preserveAspectRatio="xMidYMid meet"
-  //     >
-  //       {this.state.nodes.map((node, index) => (
-  //         <circle r={node.r} cx={node.x} cy={node.y} fill="red" key={index} />
-  //       ))}
-  //     </svg>
-  //   );
-  // }
+    return (
+      <svg
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        preserveAspectRatio="xMidYMid meet"
+      >
+        {this.state.nodes.map(node => (
+          <circle
+            key={node.id}
+            r={node.radius}
+            cx={node.x}
+            cy={node.y}
+            fill="blue"
+            stroke="white"
+          />
+        ))}
+      </svg>
+    );
+  }
 }
-
-Chart.defaultProps = {
-  width: 600,
-  height: 600,
-  forceStrength: -20
-};
 
 export default Chart;
