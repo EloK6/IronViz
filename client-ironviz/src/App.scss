@@ -378,3 +378,11 @@ body {
   display: flex;
   flex: 1;
 }
+
+.Dataviz__content__text text {
+  display: none;
+}
+
+.Dataviz__content__text circle:hover + text {
+  display: block;
+}

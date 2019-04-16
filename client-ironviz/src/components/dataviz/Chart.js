@@ -2,6 +2,7 @@ import React from "react";
 import * as d3 from "d3";
 import axios from "axios";
 import _ from "lodash";
+import d3Tip from "d3-tip";
 
 class Chart extends React.Component {
   static defaultProps = {
@@ -17,6 +18,8 @@ class Chart extends React.Component {
     this.state = {
       nodes: []
     };
+
+    this.init();
   }
 
   init() {
@@ -54,18 +57,26 @@ class Chart extends React.Component {
 
   getData = () => {
     axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
-      this.setState({
-        nodes: this.createNodes(responseFromApi.data)
+      const nodes = this.createNodes(responseFromApi.data);
+
+      this.setState({ nodes: _.cloneDeep(nodes) }, () => {
+        this.updateSimulation();
       });
-      this.init();
+      //this.init();
     });
+  };
+
+  updateSimulation = () => {
+    this.nodes = _.cloneDeep(this.state.nodes);
+    this.simulation.nodes(this.nodes);
+    this.simulation.alpha(1).restart();
   };
 
   componentDidMount() {
     this.getData();
   }
 
-  // // //Function Node
+  //Function Node
   createNodes = rawData => {
     //radius
     let maxRadius = d3.max(
@@ -79,6 +90,12 @@ class Chart extends React.Component {
       .domain([1, maxRadius])
       .range([5, 120]);
 
+    //color
+    let color = d3
+      .scaleOrdinal()
+      .domain([rawData.map(d => d.region)])
+      .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
+
     // Use map() to convert raw data into node data.
     const myNodes = rawData.map(d => ({
       id: d._id,
@@ -89,11 +106,14 @@ class Chart extends React.Component {
       name: d.name,
       region: d.region,
       x: Math.random() * this.props.width,
-      y: Math.random() * this.props.height
+      y: Math.random() * this.props.height,
+      fill: color(d.region)
     }));
+    console.log("myNodes", myNodes);
 
     // sort them descending to prevent occlusion of smaller nodes.
     myNodes.sort((a, b) => b.value - a.value);
+
     return myNodes;
   };
 
@@ -112,15 +132,33 @@ class Chart extends React.Component {
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        {this.nodes.map(node => (
+        {/* <g transform={`translate(${node.x} ${node.y})`}>
+        {this.state.nodes.map(node => (
           <circle
             key={node.name}
             r={node.radius}
-            cx={node.x}
-            cy={node.y}
-            fill="blue"
+            cx="0"
+            cy="0"
+            fill={node.fill}
             stroke="white"
           />
+      </g>
+        ))} */}
+        {this.state.nodes.map(node => (
+          <g
+            className="Dataviz__content__text"
+            transform={`translate(${node.x} ${node.y})`}
+          >
+            <circle
+              key={node.name}
+              r={node.radius}
+              cx="0"
+              cy="0"
+              fill={node.fill}
+              stroke="white"
+            />
+            <text>{node.name}</text>
+          </g>
         ))}
       </svg>
     );
