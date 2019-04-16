@@ -142,6 +142,7 @@ class Chart extends React.Component {
               cy="0"
               fill={node.fill}
               stroke="white"
+              opacity="0.85"
             />
             <text>{node.name}</text>
           </g>
