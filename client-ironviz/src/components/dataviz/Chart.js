@@ -109,8 +109,6 @@ class Chart extends React.Component {
       y: Math.random() * this.props.height,
       fill: color(d.region)
     }));
-    console.log("myNodes", myNodes);
-
     // sort them descending to prevent occlusion of smaller nodes.
     myNodes.sort((a, b) => b.value - a.value);
 
@@ -132,18 +130,6 @@ class Chart extends React.Component {
         viewBox={`0 0 ${width} ${height}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* <g transform={`translate(${node.x} ${node.y})`}>
-        {this.state.nodes.map(node => (
-          <circle
-            key={node.name}
-            r={node.radius}
-            cx="0"
-            cy="0"
-            fill={node.fill}
-            stroke="white"
-          />
-      </g>
-        ))} */}
         {this.state.nodes.map(node => (
           <g
             className="Dataviz__content__text"

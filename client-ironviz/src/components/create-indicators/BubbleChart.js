@@ -66,10 +66,10 @@ class BubbleChart extends Component {
       .scaleOrdinal()
       .domain([this.state.data.map(d => d.region)])
       .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
+
     //Tooltip
     const tip = d3Tip();
     tip.attr("class", "d3-tip").html(d => {
-      console.log(d);
       return `<div class="BubbleChart__Hover">${d.name}</div>`;
     });
 
