@@ -10,7 +10,7 @@ function Node() {
   this.value = Math.random() * MAXVALUE;
   this.radius = Math.random() * 25;
 }
-const json = [...Array(165)].map(el => new Node());
+const json = [...Array(195)].map(el => new Node());
 
 class Chart extends React.Component {
   static defaultProps = {

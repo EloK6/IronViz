@@ -368,14 +368,10 @@ body {
 }
 
 /* ----------//////////DATAVIZ PAGE//////////---------- */
-.flag {
-  background-color: #000;
-}
-
-.tooltip {
-  position: absolute;
-  background-color: lightgrey;
-  padding: 10px;
+.Dataviz {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .Dataviz__content {
