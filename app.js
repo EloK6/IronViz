@@ -49,8 +49,6 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, "client/build")));
-
 hbs.registerHelper("ifUndefined", (value, options) => {
   if (arguments.length < 2)
     throw new Error("Handlebars Helper ifUndefined needs 1 parameter");
@@ -92,5 +90,14 @@ app.use("/auth", authRoutes);
 
 app.use("/api", require("./routes/countries"));
 app.use("/api", require("./routes/indicators"));
+
+app.use(express.static(path.join(__dirname, "client/build")));
+app.use((req, res, next) => {
+  res.sendFile(path.join(__dirname, "client/build/index.html"), function(err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
 
 module.exports = app;
