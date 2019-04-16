@@ -16,7 +16,12 @@ class Chart extends React.Component {
     super(props);
     this.nodes = [];
     this.state = {
-      nodes: []
+      nodes: [],
+      tooltip: {
+        text: "",
+        x: -500,
+        y: -500
+      }
     };
 
     this.init();
@@ -124,30 +129,70 @@ class Chart extends React.Component {
     const { width, height } = this.props;
 
     return (
-      <svg
-        width={width}
-        height={height}
-        viewBox={`0 0 ${width} ${height}`}
-        preserveAspectRatio="xMidYMid meet"
+      <div
+        onMouseMove={ev => {
+          this.setState({
+            tooltip: {
+              text: this.state.tooltip.text,
+              x: ev.pageX,
+              y: ev.pageY
+            }
+          });
+        }}
       >
-        {this.state.nodes.map(node => (
-          <g
-            className="Dataviz__content__text"
-            transform={`translate(${node.x} ${node.y})`}
-          >
-            <circle
-              key={node.name}
-              r={node.radius}
-              cx="0"
-              cy="0"
-              fill={node.fill}
-              stroke="white"
-              opacity="0.85"
-            />
-            <text>{node.name}</text>
-          </g>
-        ))}
-      </svg>
+        <svg
+          width={width}
+          height={height}
+          viewBox={`0 0 ${width} ${height}`}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          {this.state.nodes.map(node => (
+            <g
+              className="Dataviz__content__text"
+              transform={`translate(${node.x} ${node.y})`}
+            >
+              <circle
+                key={node.name}
+                r={node.radius}
+                cx="0"
+                cy="0"
+                fill={node.fill}
+                stroke="white"
+                opacity="0.85"
+                onMouseEnter={ev => {
+                  this.setState({
+                    tooltip: {
+                      text: node.name,
+                      x: this.state.tooltip.x,
+                      y: this.state.tooltip.y
+                    }
+                  });
+                }}
+                onMouseLeave={ev => {
+                  this.setState({
+                    tooltip: {
+                      text: "",
+                      x: this.state.tooltip.x,
+                      y: this.state.tooltip.y
+                    }
+                  });
+                }}
+              />
+              {/* <text>{node.name}</text> */}
+            </g>
+          ))}
+        </svg>
+
+        <p
+          style={{
+            position: "absolute",
+            left: this.state.tooltip.x,
+            top: this.state.tooltip.y
+          }}
+        >
+          {this.state.tooltip.text}
+        </p>
+      </div>
     );
   }
 }
