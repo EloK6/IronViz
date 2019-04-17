@@ -7,7 +7,7 @@ class Button extends Component {
   render() {
     const { active } = this.props;
     return (
-      <div className="Button">
+      <div className="Button__dataviz">
         <button
           className={`Button__form ${active === "all" && "active"}`}
           name="all"

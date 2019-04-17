@@ -5,7 +5,7 @@ import _ from "lodash";
 
 class Chart extends React.Component {
   static defaultProps = {
-    width: 800,
+    width: 960,
     height: 600,
     forceStrength: 0.02,
     velocityDecay: 0.05
@@ -18,9 +18,14 @@ class Chart extends React.Component {
       nodes: [],
       tooltip: {
         text: "",
-        x: -500,
-        y: -500
+        x: 0,
+        y: 0
       }
+    };
+
+    this.mouse = {
+      x: undefined,
+      y: undefined
     };
 
     this.init();
@@ -57,26 +62,6 @@ class Chart extends React.Component {
       .force("charge", d3.forceManyBody().strength(charge))
       .force("collision", d3.forceCollide().radius(d => d.radius))
       .on("tick", this.ticked);
-  }
-
-  getData = () => {
-    axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
-      const nodes = this.createNodes(responseFromApi.data);
-      this.setState({ nodes: _.cloneDeep(nodes) }, () => {
-        this.updateSimulation();
-      });
-      //this.init();
-    });
-  };
-
-  updateSimulation = () => {
-    this.nodes = _.cloneDeep(this.state.nodes);
-    this.simulation.nodes(this.nodes);
-    this.simulation.alpha(1).restart();
-  };
-
-  componentDidMount() {
-    this.getData();
   }
 
   //Function Node
@@ -118,79 +103,99 @@ class Chart extends React.Component {
     return myNodes;
   };
 
+  getData = () => {
+    axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
+      const nodes = this.createNodes(responseFromApi.data);
+      this.setState({ nodes: _.cloneDeep(nodes) }, () => {
+        this.updateSimulation();
+      });
+      //this.init();
+    });
+  };
+
   ticked = () => {
     // https://stackoverflow.com/a/46865234/133327
     this.setState({ nodes: _.cloneDeep(this.nodes) });
   };
 
+  updateSimulation = () => {
+    this.nodes = _.cloneDeep(this.state.nodes);
+    this.simulation.nodes(this.nodes);
+    this.simulation.alpha(1).restart();
+  };
+
+  rafstep = () => {
+    this.setState(
+      {
+        tooltip: { ...this.state.tooltip, x: this.mouse.x, y: this.mouse.y }
+      },
+      () => {
+        this.rafid = requestAnimationFrame(this.rafstep); // loop
+      }
+    );
+  };
+
+  componentDidMount() {
+    window.addEventListener("mousemove", this.mouseMoveHandler);
+    this.rafid = requestAnimationFrame(this.rafstep);
+    this.getData();
+  }
+
+  mouseMoveHandler = ev => {
+    this.mouse.x = ev.pageX;
+    this.mouse.y = ev.pageY;
+    // console.log("mouse", this.mouse.x, this.mouse.y);
+  };
+  mouseEnterHandler = node => {
+    this.setState({ tooltip: { ...this.state.tooltip, text: node.name } });
+  };
+  mouseLeaveHandler = node => {
+    this.setState({ tooltip: { ...this.state.tooltip, text: "" } });
+  };
+
+  componentWillUnmount() {
+    window.removeEventListener("mousemove", this.mousemoveHandler);
+    cancelAnimationFrame(this.rafid);
+  }
+
   render() {
     const { width, height } = this.props;
 
     return (
-      <div
-      // onMouseMove={ev => {
-      //   this.setState({
-      //     tooltip: {
-      //       text: this.state.tooltip.text,
-      //       x: ev.pageX,
-      //       y: ev.pageY
-      //     }
-      //   });
-      // }}
-      >
-        <svg
-          width={width}
-          height={height}
-          viewBox={`0 0 ${width} ${height}`}
-          preserveAspectRatio="xMidYMid meet"
-        >
-          {this.state.nodes.map(node => (
-            <g
-              className="Dataviz__content__text"
-              transform={`translate(${node.x} ${node.y})`}
-            >
+      <>
+        <div className="Chart">
+          <svg
+            className="Dataviz__svg"
+            width={width}
+            height={height}
+            viewBox={`0 0 ${width} ${height}`}
+            preserveAspectRatio="xMidYMid meet"
+          >
+            {this.state.nodes.map(node => (
               <circle
                 key={node.name}
                 r={node.radius}
-                cx="0"
-                cy="0"
+                cx={node.x}
+                cy={node.y}
                 fill={node.fill}
                 stroke="white"
                 opacity="0.85"
-                onMouseEnter={ev => {
-                  this.setState({
-                    tooltip: {
-                      text: node.name,
-                      x: this.state.tooltip.x,
-                      y: this.state.tooltip.y
-                    }
-                  });
-                }}
-                onMouseLeave={ev => {
-                  this.setState({
-                    tooltip: {
-                      text: "",
-                      x: this.state.tooltip.x,
-                      y: this.state.tooltip.y
-                    }
-                  });
-                }}
+                onMouseEnter={ev => this.mouseEnterHandler(node)}
+                onMouseLeave={ev => this.mouseLeaveHandler(node)}
               />
-              {/* <text>{node.name}</text> */}
-            </g>
-          ))}
-        </svg>
-
-        <p
-          style={{
-            position: "absolute",
-            left: this.state.tooltip.x,
-            top: this.state.tooltip.y
-          }}
-        >
-          {this.state.tooltip.text}
-        </p>
-      </div>
+            ))}
+          </svg>
+          <div
+            className="toolText"
+            style={{
+              left: `${this.state.tooltip.x}px`,
+              top: `${this.state.tooltip.y}px`
+            }}
+          >
+            {this.state.tooltip.text}
+          </div>
+        </div>
+      </>
     );
   }
 }
