@@ -2,7 +2,6 @@ import React from "react";
 import * as d3 from "d3";
 import axios from "axios";
 import _ from "lodash";
-import d3Tip from "d3-tip";
 
 class Chart extends React.Component {
   static defaultProps = {
@@ -63,7 +62,6 @@ class Chart extends React.Component {
   getData = () => {
     axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
       const nodes = this.createNodes(responseFromApi.data);
-
       this.setState({ nodes: _.cloneDeep(nodes) }, () => {
         this.updateSimulation();
       });
@@ -130,15 +128,15 @@ class Chart extends React.Component {
 
     return (
       <div
-        onMouseMove={ev => {
-          this.setState({
-            tooltip: {
-              text: this.state.tooltip.text,
-              x: ev.pageX,
-              y: ev.pageY
-            }
-          });
-        }}
+      // onMouseMove={ev => {
+      //   this.setState({
+      //     tooltip: {
+      //       text: this.state.tooltip.text,
+      //       x: ev.pageX,
+      //       y: ev.pageY
+      //     }
+      //   });
+      // }}
       >
         <svg
           width={width}

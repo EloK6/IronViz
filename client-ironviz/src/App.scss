@@ -386,3 +386,8 @@ body {
 .Dataviz__content__text circle:hover + text {
   display: block;
 }
+
+circle:hover {
+  stroke: black;
+  stroke-width: 2;
+}
