@@ -5,18 +5,18 @@ class Button extends Component {
     this.props.onChanged(event.target.name);
   };
   render() {
-    const { active } = this.props;
+    // const { active } = this.props;
     return (
       <div className="Button__dataviz">
         <button
-          className={`Button__form ${active === "all" && "active"}`}
+          className="Button__dataviz__all"
           name="all"
           onClick={this.onBtnClick}
         >
           All
         </button>
         <button
-          className={`Button__form ${active === "region" && "active"}`}
+          className="Button__dataviz__region"
           name="region"
           onClick={this.onBtnClick}
         >

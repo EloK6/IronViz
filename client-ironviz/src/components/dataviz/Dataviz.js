@@ -5,13 +5,20 @@ import Chart from "./Chart";
 import Button from "./Button";
 
 class Dataviz extends Component {
+  state = {};
+
+  onChangeSplit = name => {
+    console.log({ name });
+    this.setState({ onChange: name });
+  };
+
   render() {
     return (
       <div className="Dataviz">
         <NavBar />
         <div className="Dataviz__content">
-          <Button />
-          <Chart />
+          <Button onChanged={this.onChangeSplit} />
+          <Chart onChange={this.state.onChange} />
         </div>
         <Footer />
       </div>

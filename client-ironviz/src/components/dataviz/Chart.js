@@ -84,6 +84,18 @@ class Chart extends React.Component {
       .domain([rawData.map(d => d.region)])
       .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
 
+    //region
+    // let regions = ["Asia", "Africa", "Europe", "Americas", "Oceania"];
+    let regions = [...new Set(rawData.map(d => d.region))];
+
+    // [
+    //   { x: this.width / regions.length, y: this.height / 2 },
+    //   { x: 2 * (this.width / regions.length), y: this.height / 2 },
+    //   { x: 3 * (this.width / regions.length), y: this.height / 2 },
+    //   { x: 4 * (this.width / regions.length), y: this.height / 2 },
+    //   { x: 5 * (this.width / regions.length), y: this.height / 2 }
+    // ];
+
     // Use map() to convert raw data into node data.
     const myNodes = rawData.map(d => ({
       id: d._id,
@@ -99,6 +111,22 @@ class Chart extends React.Component {
     }));
     // sort them descending to prevent occlusion of smaller nodes.
     myNodes.sort((a, b) => b.value - a.value);
+
+    //centers
+    if (this.props.onChange && this.props.onChange.target.name === "region") {
+      let centers = regions.map((region, index) => {
+        return {
+          x: (index + 1) * (this.props.width / regions.length),
+          y: this.props.height / 2,
+          region: region
+        };
+      });
+      console.log("center", centers);
+      myNodes.forEach(node => {
+        const center = centers.find(node.region);
+        node.x = center.x;
+      });
+    }
 
     return myNodes;
   };
