@@ -24,6 +24,7 @@ class CountriesDetail extends Component {
           this.setState({
             flag: countryResp.data.flag,
             name: countryResp.data.name,
+            valueGini: this.getIndicatorValue(indicResp.data, "GINI index"),
             valueHappyP: this.getIndicatorValue(
               indicResp.data,
               "happy planet index"
@@ -148,6 +149,18 @@ class CountriesDetail extends Component {
             <div className="CountriesDetail__card__table-global">
               <table className="CountriesDetail__card__table">
                 <tr>
+                  <td>Gini Index</td>
+                  <td div className="CountriesDetail__background">
+                    <div
+                      className="CountriesDetail__fill"
+                      style={{
+                        width: 101 - valueGini + "%",
+                        backgroundColor: `${this.getColor(valueHappyP * 2)}`
+                      }}
+                    />
+                  </td>
+                </tr>
+                <tr>
                   <td>Happy planet</td>
                   <td div className="CountriesDetail__background">
                     <div
@@ -233,6 +246,8 @@ class CountriesDetail extends Component {
                     />
                   </td>
                 </tr>
+              </table>
+              <table className="CountriesDetail__card__table">
                 <tr>
                   <td>Government spending score</td>
                   <td div className="CountriesDetail__background">
@@ -245,8 +260,6 @@ class CountriesDetail extends Component {
                     />
                   </td>
                 </tr>
-              </table>
-              <table className="CountriesDetail__card__table">
                 <tr>
                   <td>Judicial effectiveness score</td>
                   <td div className="CountriesDetail__background">

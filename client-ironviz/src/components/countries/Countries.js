@@ -59,15 +59,11 @@ class Countries extends Component {
                         flag={eachCountry.flag}
                         iso3={eachCountry.iso3}
                         country={eachCountry.name}
-                        value1={eachCountry["GINI index"]}
-                        value2={eachCountry["happy planet index"]}
-                        value3={eachCountry["human development index"]}
-                        value4={eachCountry["world happiness report score"]}
-                        value5={
-                          eachCountry[
-                            "sustainable economic development assessment (SEDA)"
-                          ]
-                        }
+                        value1={eachCountry.indicator_id[2].value}
+                        value2={eachCountry.indicator_id[3].value}
+                        value3={eachCountry.indicator_id[4].value}
+                        value4={eachCountry.indicator_id[5].value}
+                        value5={eachCountry.indicator_id[6].value}
                       />
                     </Link>
                   </div>

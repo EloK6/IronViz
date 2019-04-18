@@ -23,6 +23,22 @@ class BoxCountries extends Component {
     });
   }
 
+  getColor = value => {
+    let colorValue = "";
+    if (value <= 19) {
+      colorValue = "#a20643";
+    } else if (value >= 20 && value <= 39) {
+      colorValue = "#fa9d5a";
+    } else if (value >= 40 && value <= 59) {
+      colorValue = "#fcf6ae";
+    } else if (value >= 60 && value <= 79) {
+      colorValue = "#91d068";
+    } else if (value >= 80 && value <= 100) {
+      colorValue = "#016d3a";
+    }
+    return colorValue;
+  };
+
   render() {
     const { isHover } = this.state;
     const {
@@ -63,7 +79,10 @@ class BoxCountries extends Component {
                     <td div className="BoxHover__background">
                       <div
                         className="BoxHover__fill"
-                        style={{ width: value1 + "%" }}
+                        style={{
+                          width: 101 - value1 + "%",
+                          backgroundColor: `${this.getColor(101 - value1)}`
+                        }}
                       />
                     </td>
                   </tr>
@@ -72,7 +91,10 @@ class BoxCountries extends Component {
                     <td div className="BoxHover__background">
                       <div
                         className="BoxHover__fill"
-                        style={{ width: value2 * 2 + "%" }}
+                        style={{
+                          width: value2 * 2 + "%",
+                          backgroundColor: `${this.getColor(value2 * 2)}`
+                        }}
                       />
                     </td>
                   </tr>
@@ -81,7 +103,10 @@ class BoxCountries extends Component {
                     <td div className="BoxHover__background">
                       <div
                         className="BoxHover__fill"
-                        style={{ width: value3 * 100 + "%" }}
+                        style={{
+                          width: value3 * 100 + "%",
+                          backgroundColor: `${this.getColor(value3 * 100)}`
+                        }}
                       />
                     </td>
                   </tr>
@@ -90,7 +115,10 @@ class BoxCountries extends Component {
                     <td div className="BoxHover__background">
                       <div
                         className="BoxHover__fill"
-                        style={{ width: value4 * 10 + "%" }}
+                        style={{
+                          width: value4 * 10 + "%",
+                          backgroundColor: `${this.getColor(value4 * 10)}`
+                        }}
                       />
                     </td>
                   </tr>
@@ -99,7 +127,10 @@ class BoxCountries extends Component {
                     <td div className="BoxHover__background">
                       <div
                         className="BoxHover__fill"
-                        style={{ width: value5 + "%" }}
+                        style={{
+                          width: value5 + "%",
+                          backgroundColor: `${this.getColor(value5)}`
+                        }}
                       />
                     </td>
                   </tr>
