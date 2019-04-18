@@ -5,10 +5,12 @@ import Chart from "./Chart";
 import Button from "./Button";
 
 class Dataviz extends Component {
-  state = {};
+  state = {
+    onChange: null
+  };
 
   onChangeSplit = name => {
-    console.log({ name });
+    console.log("onChangeSplit", name);
     this.setState({ onChange: name });
   };
 

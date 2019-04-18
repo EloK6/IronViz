@@ -13,6 +13,7 @@ class Chart extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.nodes = [];
     this.state = {
       nodes: [],
@@ -28,10 +29,12 @@ class Chart extends React.Component {
       y: undefined
     };
 
-    this.init();
-  }
+    this.byRegion = false;
 
-  init() {
+    //
+    // d3 init
+    //
+
     const { width, height, forceStrength, velocityDecay } = this.props;
     // d3-force simulation
     function charge(d) {
@@ -47,7 +50,11 @@ class Chart extends React.Component {
           .forceX()
           .strength(forceStrength)
           .x(d => {
-            return width / 2;
+            if (this.byRegion && this.centers && this.regions) {
+              return this.centers[this.regions.indexOf(d.region)].x;
+            } else {
+              return width / 2;
+            }
           })
       )
       .force(
@@ -64,7 +71,6 @@ class Chart extends React.Component {
       .on("tick", this.ticked);
   }
 
-  //Function Node
   createNodes = rawData => {
     //radius
     let maxRadius = d3.max(
@@ -87,14 +93,8 @@ class Chart extends React.Component {
     //region
     // let regions = ["Asia", "Africa", "Europe", "Americas", "Oceania"];
     let regions = [...new Set(rawData.map(d => d.region))];
-
-    // [
-    //   { x: this.width / regions.length, y: this.height / 2 },
-    //   { x: 2 * (this.width / regions.length), y: this.height / 2 },
-    //   { x: 3 * (this.width / regions.length), y: this.height / 2 },
-    //   { x: 4 * (this.width / regions.length), y: this.height / 2 },
-    //   { x: 5 * (this.width / regions.length), y: this.height / 2 }
-    // ];
+    this.regions = regions;
+    console.log("regions", regions);
 
     // Use map() to convert raw data into node data.
     const myNodes = rawData.map(d => ({
@@ -113,33 +113,44 @@ class Chart extends React.Component {
     myNodes.sort((a, b) => b.value - a.value);
 
     //centers
-    if (this.props.onChange && this.props.onChange.target.name === "region") {
-      let centers = regions.map((region, index) => {
-        return {
-          x: (index + 1) * (this.props.width / regions.length),
-          y: this.props.height / 2,
-          region: region
-        };
-      });
-      console.log("center", centers);
-      myNodes.forEach(node => {
-        const center = centers.find(node.region);
-        node.x = center.x;
-      });
-    }
+    // if (this.props.onChange && this.props.onChange.target.name === "region") {
+    let centers = regions.map((region, index) => {
+      return {
+        x: (index + 1) * (this.props.width / (regions.length + 1)),
+        y: this.props.height / 2,
+        region: region
+      };
+    });
+    this.centers = centers;
+    console.log("centers", centers);
 
     return myNodes;
   };
 
-  getData = () => {
+  componentDidMount() {
+    window.addEventListener("mousemove", this.mouseMoveHandler);
+    this.rafid = requestAnimationFrame(this.rafstep);
+
     axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
       const nodes = this.createNodes(responseFromApi.data);
       this.setState({ nodes: _.cloneDeep(nodes) }, () => {
         this.updateSimulation();
       });
-      //this.init();
     });
-  };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.onChange !== this.props.onChange) {
+      console.log("onChange changed to", this.props.onChange);
+      if (this.props.onChange === "region") {
+        this.byRegion = true;
+      } else {
+        this.byRegion = false;
+      }
+      console.log("byRegion", this.byRegion);
+      this.updateSimulation();
+    }
+  }
 
   ticked = () => {
     // https://stackoverflow.com/a/46865234/133327
@@ -162,12 +173,6 @@ class Chart extends React.Component {
       }
     );
   };
-
-  componentDidMount() {
-    window.addEventListener("mousemove", this.mouseMoveHandler);
-    this.rafid = requestAnimationFrame(this.rafstep);
-    this.getData();
-  }
 
   mouseMoveHandler = ev => {
     this.mouse.x = ev.pageX;
