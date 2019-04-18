@@ -156,7 +156,7 @@ class BubbleChart extends Component {
 
   render() {
     let points = this.state.data.map(d => (
-      <circle cx="0" cy="0" r="0" style={{ fill: "white" }} />
+      <circle cx="450" cy="600" r="0" style={{ fill: "white" }} />
     ));
 
     return (
