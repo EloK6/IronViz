@@ -76,7 +76,28 @@ class BoxCountries extends Component {
                 <table className="BoxHover__table">
                   <tr>
                     <td>Gini</td>
+
                     <td div className="BoxHover__background">
+                      {value1 < 1 ? (
+                        <div
+                          className="BoxHover__fill"
+                          style={{
+                            width: value1 + "%",
+                            backgroundColor: `${this.getColor(value1)}`
+                          }}
+                        />
+                      ) : (
+                        <div
+                          className="CountriesDetail__fill"
+                          style={{
+                            width: 101 - value1 + "%",
+                            backgroundColor: `${this.getColor(101 - value1)}`
+                          }}
+                        />
+                      )}
+                    </td>
+
+                    {/* <td div className="BoxHover__background">
                       <div
                         className="BoxHover__fill"
                         style={{
@@ -84,7 +105,7 @@ class BoxCountries extends Component {
                           backgroundColor: `${this.getColor(101 - value1)}`
                         }}
                       />
-                    </td>
+                    </td> */}
                   </tr>
                   <tr>
                     <td>Happy planet</td>

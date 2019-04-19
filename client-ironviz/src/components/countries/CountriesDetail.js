@@ -103,6 +103,14 @@ class CountriesDetail extends Component {
     return colorValue;
   };
 
+  getGini = valueGini => {
+    if (valueGini < 1) {
+      valueGini = 100;
+    } else {
+    }
+    return valueGini;
+  };
+
   componentDidMount() {
     this.getOneCountry();
   }
@@ -128,7 +136,7 @@ class CountriesDetail extends Component {
       financialFreedom,
       women
     } = this.state;
-    console.log(valueGini);
+
     return (
       <div className="CountriesDetail">
         <div className="CountriesDetail__content">
@@ -151,13 +159,23 @@ class CountriesDetail extends Component {
                 <tr>
                   <td>Gini Index</td>
                   <td div className="CountriesDetail__background">
-                    <div
-                      className="CountriesDetail__fill"
-                      style={{
-                        width: 101 - valueGini + "%",
-                        backgroundColor: `${this.getColor(valueHappyP * 2)}`
-                      }}
-                    />
+                    {valueGini < 1 ? (
+                      <div
+                        className="CountriesDetail__fill"
+                        style={{
+                          width: valueGini + "%",
+                          backgroundColor: `${this.getColor(valueGini)}`
+                        }}
+                      />
+                    ) : (
+                      <div
+                        className="CountriesDetail__fill"
+                        style={{
+                          width: 101 - valueGini + "%",
+                          backgroundColor: `${this.getColor(101 - valueGini)}`
+                        }}
+                      />
+                    )}
                   </td>
                 </tr>
                 <tr>
