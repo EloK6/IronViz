@@ -372,6 +372,7 @@ body {
 }
 
 .Dataviz__content {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -394,6 +395,11 @@ circle:hover {
 
 /* ----------//////////BUTTON//////////---------- */
 
+.Button__dataviz {
+  padding-left: 10px;
+  position: absolute;
+  top: 10px;
+}
 .toolText {
   position: absolute;
   pointer-events: none;
@@ -417,7 +423,4 @@ circle:hover {
 }
 .toolText:empty {
   display: none;
-}
-.Button__dataviz {
-  margin-top: 20px;
 }

@@ -31,7 +31,7 @@ class NavBar extends Component {
               </li> */}
               <li className="nav-item borderLeftRight">
                 <Link to="/dataviz" className="nav-link">
-                  Datavisualisations
+                  Population in dataviz
                 </Link>
               </li>
               <li className="nav-item borderLeftRight">
