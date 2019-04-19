@@ -10,7 +10,6 @@ class Dataviz extends Component {
   };
 
   onChangeSplit = name => {
-    console.log("onChangeSplit", name);
     this.setState({ onChange: name });
   };
 
@@ -20,6 +19,7 @@ class Dataviz extends Component {
         <NavBar />
         <div className="Dataviz__content">
           <Button onChanged={this.onChangeSplit} />
+
           <Chart onChange={this.state.onChange} />
         </div>
         <Footer />

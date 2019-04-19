@@ -7,7 +7,7 @@ class Chart extends React.Component {
   static defaultProps = {
     width: 960,
     height: 600,
-    forceStrength: 0.02,
+    forceStrength: 0.05,
     velocityDecay: 0.05
   };
 
@@ -82,7 +82,7 @@ class Chart extends React.Component {
     let radiusScale = d3
       .scaleLinear()
       .domain([1, maxRadius])
-      .range([5, 120]);
+      .range([5, 100]);
 
     //color
     let color = d3
@@ -94,7 +94,6 @@ class Chart extends React.Component {
     // let regions = ["Asia", "Africa", "Europe", "Americas", "Oceania"];
     let regions = [...new Set(rawData.map(d => d.region))];
     this.regions = regions;
-    console.log("regions", regions);
 
     // Use map() to convert raw data into node data.
     const myNodes = rawData.map(d => ({
@@ -122,7 +121,6 @@ class Chart extends React.Component {
       };
     });
     this.centers = centers;
-    console.log("centers", centers);
 
     return myNodes;
   };
