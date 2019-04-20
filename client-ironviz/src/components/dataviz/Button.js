@@ -30,6 +30,13 @@ class Button extends Component {
         >
           Landlocked
         </button>
+        <button
+          className="Button__dataviz__region btn btn-dark"
+          name="subregion"
+          onClick={this.onBtnClick}
+        >
+          SubRegion
+        </button>
       </div>
       // </div>
     );

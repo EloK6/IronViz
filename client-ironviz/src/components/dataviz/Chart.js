@@ -16,6 +16,7 @@ class Chart extends React.Component {
 
     this.nodes = [];
     this.state = {
+      indics: [],
       nodes: [],
       tooltip: {
         text: "",
@@ -84,7 +85,7 @@ class Chart extends React.Component {
     let radiusScale = d3
       .scaleLinear()
       .domain([1, maxRadius])
-      .range([5, 100]);
+      .range([5, 80]);
 
     //color
     let color = d3
@@ -95,6 +96,8 @@ class Chart extends React.Component {
     //region
     let indics = [...new Set(rawData.map(d => d[this.splitIndicator]))];
     this.indics = indics;
+    console.log("indics", indics);
+    this.setState({ indics: indics });
 
     // Use map() to convert raw data into node data.
     const myNodes = rawData.map(d => ({
@@ -115,14 +118,34 @@ class Chart extends React.Component {
     myNodes.sort((a, b) => b.value - a.value);
 
     //Define centers
-    let centers = indics.map((region, index) => {
+
+    // eslint-disable-next-line no-undef
+    // calculatePosition = (index, ObjEl) => {
+    //   let centers = indics.map((ind, index) => {
+    //     return {
+    //       x: (index + 1) * (this.props.width / (indics.length + 1))
+    //     };
+    //   });
+    //   return centers.objEl;
+    // };
+
+    let centers = indics.map((ind, index) => {
       return {
         x: (index + 1) * (this.props.width / (indics.length + 1)),
         y: this.props.height / 2,
-        region: region
+        ind: ind
       };
     });
     this.centers = centers;
+
+    //Titles
+    // let titles = indics.map(ind => {
+    //   return {
+    //     ind: ind
+    //   };
+    // });
+    // console.log("hello", titles);
+    // this.titles = titles;
 
     return myNodes;
   };
@@ -153,12 +176,15 @@ class Chart extends React.Component {
       } else if (this.props.onChange === "landlocked") {
         this.byRegion = true;
         this.splitIndicator = "landlocked";
+      } else if (this.props.onChange === "subregion") {
+        this.byRegion = true;
+        this.splitIndicator = "subregion";
       } else {
         this.byRegion = false;
         this.splitIndicator = null;
       }
       this.createNodes(this.state.rawData);
-      console.log("byRegion", this.byRegion);
+
       this.updateSimulation();
     }
   }
@@ -238,6 +264,22 @@ class Chart extends React.Component {
           >
             {this.state.tooltip.text}
           </div>
+          {this.centers && (
+            <div className="titles">
+              {this.state.indics.map((indic, index) => (
+                <p
+                  style={{
+                    position: "absolute",
+                    left: `${(100 * (index + 1)) / (this.centers.length + 1)}%`,
+                    top: `100px`,
+                    transform: `translateX(-50%)`
+                  }}
+                >
+                  {indic}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       </>
     );
