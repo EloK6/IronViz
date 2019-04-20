@@ -88,13 +88,16 @@ app.use("/auth", authRoutes);
 app.use("/api", require("./routes/countries"));
 app.use("/api", require("./routes/indicators"));
 
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "client-ironviz/build")));
 app.use((req, res, next) => {
-  res.sendFile(path.join(__dirname, "client/build/index.html"), function(err) {
-    if (err) {
-      res.status(500).send(err);
+  res.sendFile(
+    path.join(__dirname, "client-ironviz/build/index.html"),
+    function(err) {
+      if (err) {
+        res.status(500).send(err);
+      }
     }
-  });
+  );
 });
 
 module.exports = app;
