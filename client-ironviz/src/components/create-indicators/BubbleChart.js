@@ -17,11 +17,13 @@ class BubbleChart extends Component {
   }
 
   getData = () => {
-    axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
-      this.setState({
-        data: responseFromApi.data
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/countries`)
+      .then(responseFromApi => {
+        this.setState({
+          data: responseFromApi.data
+        });
       });
-    });
   };
 
   componentDidMount() {

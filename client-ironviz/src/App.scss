@@ -410,16 +410,16 @@ circle:hover {
   transform: translate(-50%, -100%);
   margin-top: -0.75em;
 
-  &::after {
-    content: "";
-    display: inline-block;
-    border: 0.5em solid transparent;
-    border-top-color: rgba(0, 0, 0, 0.9);
-    position: absolute;
-    top: calc(100% - 1px);
-    left: 50%;
-    transform: translate(-50%, 0);
-  }
+  // &::after {
+  //   content: "";
+  //   display: inline-block;
+  //   // border: 0.5em solid transparent;
+  //   // border-top-color: rgba(0, 0, 0, 0.9);
+  //   // position: absolute;
+  //   top: calc(100% - 1px);
+  //   left: 50%;
+  //   transform: translate(-50%, 0);
+  // }
 }
 .toolText:empty {
   display: none;

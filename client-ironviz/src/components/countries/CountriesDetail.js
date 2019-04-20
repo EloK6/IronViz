@@ -16,8 +16,8 @@ class CountriesDetail extends Component {
     const { params } = this.props.match;
     axios
       .all([
-        axios.get(`http://localhost:5000/api/countries/${params.id}`),
-        axios.get(`http://localhost:5000/api/indicators/${params.id}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/countries/${params.id}`),
+        axios.get(`${process.env.REACT_APP_API_URL}/indicators/${params.id}`)
       ])
       .then(
         axios.spread((countryResp, indicResp) => {

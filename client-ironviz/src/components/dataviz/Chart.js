@@ -129,12 +129,14 @@ class Chart extends React.Component {
     window.addEventListener("mousemove", this.mouseMoveHandler);
     this.rafid = requestAnimationFrame(this.rafstep);
 
-    axios.get(`http://localhost:5000/api/countries`).then(responseFromApi => {
-      const nodes = this.createNodes(responseFromApi.data);
-      this.setState({ nodes: _.cloneDeep(nodes) }, () => {
-        this.updateSimulation();
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/countries`)
+      .then(responseFromApi => {
+        const nodes = this.createNodes(responseFromApi.data);
+        this.setState({ nodes: _.cloneDeep(nodes) }, () => {
+          this.updateSimulation();
+        });
       });
-    });
   }
 
   componentDidUpdate(prevProps, prevState) {
