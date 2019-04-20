@@ -130,7 +130,7 @@ class Chart extends React.Component {
     this.rafid = requestAnimationFrame(this.rafstep);
 
     axios
-      .get(`${process.env.REACT_APP_API_URL} || ""/api/countries`)
+      .get(`${process.env.REACT_APP_API_URL || ""}/api/countries`)
       .then(responseFromApi => {
         const nodes = this.createNodes(responseFromApi.data);
         this.setState({ nodes: _.cloneDeep(nodes) }, () => {
