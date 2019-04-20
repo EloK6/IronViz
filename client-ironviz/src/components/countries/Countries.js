@@ -17,7 +17,7 @@ class Countries extends Component {
 
   getAllCountries = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/countries`)
+      .get(`${process.env.REACT_APP_API_URL || ""}/api/countries`)
       .then(responseFromApi => {
         this.setState({
           listOfCountries: responseFromApi.data

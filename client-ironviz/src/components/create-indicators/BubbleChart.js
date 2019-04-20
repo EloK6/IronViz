@@ -18,7 +18,7 @@ class BubbleChart extends Component {
 
   getData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/countries`)
+      .get(`${process.env.REACT_APP_API_URL || ""}/api/countries`)
       .then(responseFromApi => {
         this.setState({
           data: responseFromApi.data
