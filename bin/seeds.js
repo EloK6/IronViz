@@ -1,9 +1,12 @@
+require("dotenv").config({
+  path: require("path").resolve(__dirname, "../.env")
+});
+
 const mongoose = require("mongoose");
 const Country = require("../models/Country");
 const Indicator = require("../models/Indicator");
 
-const dbName = "ironviz";
-mongoose.connect(`mongodb://localhost/${dbName}`);
+mongoose.connect(process.env.MONGODB_URI);
 
 const countries = require("./countries.json");
 const governments = require("./governments.json");
