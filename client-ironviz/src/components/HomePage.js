@@ -11,15 +11,11 @@ class HomePage extends Component {
           <div className="HomePage__text">
             <h1>IronViz</h1>
             <p>
-              Hae duae provinciae bello quondam piratico catervis mixtae
-              praedonum a Servilio pro consule missae sub iugum factae sunt
-              vectigales. et hae quidem regiones velut in prominenti terrarum
-              lingua positae ob orbe eoo monte Amano disparantur. Superatis
-              Tauri montis verticibus qui ad solis ortum sublimius attolluntur,
-              Cilicia spatiis porrigitur late distentis dives bonis omnibus
-              terra, eiusque lateri dextro adnexa Isauria, pari sorte uberi
-              palmite viget et frugibus minutis, quam mediam navigabile flumen
-              Calycadnus interscindit.
+              The purpose was a dataviz challenge about World Data.The focus is
+              how governments are improving citizens’ lives – via environment,
+              happiness, technology or other areas of support. From different
+              databases, we provide data-visualizations that tell a story or
+              reveal something interesting about the data.
             </p>
           </div>
         </div>

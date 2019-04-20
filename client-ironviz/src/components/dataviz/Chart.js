@@ -88,7 +88,7 @@ class Chart extends React.Component {
     let color = d3
       .scaleOrdinal()
       .domain([rawData.map(d => d.region)])
-      .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
+      .range(["#FF8370", "#AA66E8", "#68E866", "#7DDAFF", "#FFE36B"]);
 
     //region
     // let regions = ["Asia", "Africa", "Europe", "Americas", "Oceania"];

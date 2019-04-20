@@ -67,7 +67,7 @@ class BubbleChart extends Component {
     let color = d3
       .scaleOrdinal()
       .domain([this.state.data.map(d => d.region)])
-      .range(["#FF8370", "#AA66E8", "#7DDAFF", "#68E866", "#FFE36B"]);
+      .range(["#FF8370", "#AA66E8", "#68E866", "#7DDAFF", "#FFE36B"]);
 
     //Tooltip
     const tip = d3Tip();
