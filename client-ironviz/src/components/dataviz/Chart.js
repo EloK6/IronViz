@@ -7,7 +7,7 @@ class Chart extends React.Component {
   static defaultProps = {
     width: 960,
     height: 600,
-    forceStrength: 0.05,
+    forceStrength: 0.07,
     velocityDecay: 0.05
   };
 
@@ -30,7 +30,7 @@ class Chart extends React.Component {
     };
 
     this.byRegion = false;
-
+    this.splitIndicator = null;
     //
     // d3 init
     //
@@ -50,8 +50,10 @@ class Chart extends React.Component {
           .forceX()
           .strength(forceStrength)
           .x(d => {
-            if (this.byRegion && this.centers && this.regions) {
-              return this.centers[this.regions.indexOf(d.region)].x;
+            if (this.byRegion && this.centers && this.indics) {
+              // console.log(this.splitIndicator , d, d[this.splitIndicator ]);
+              return this.centers[this.indics.indexOf(d[this.splitIndicator])]
+                .x;
             } else {
               return width / 2;
             }
@@ -91,9 +93,8 @@ class Chart extends React.Component {
       .range(["#FF8370", "#AA66E8", "#68E866", "#7DDAFF", "#FFE36B"]);
 
     //region
-    // let regions = ["Asia", "Africa", "Europe", "Americas", "Oceania"];
-    let regions = [...new Set(rawData.map(d => d.region))];
-    this.regions = regions;
+    let indics = [...new Set(rawData.map(d => d[this.splitIndicator]))];
+    this.indics = indics;
 
     // Use map() to convert raw data into node data.
     const myNodes = rawData.map(d => ({
@@ -104,6 +105,8 @@ class Chart extends React.Component {
       value: d.indicator_id.find(indic => indic.key === "population").value,
       name: d.name,
       region: d.region,
+      subregion: d.subregion,
+      landlocked: d.landlocked,
       x: Math.random() * this.props.width,
       y: Math.random() * this.props.height,
       fill: color(d.region)
@@ -111,11 +114,10 @@ class Chart extends React.Component {
     // sort them descending to prevent occlusion of smaller nodes.
     myNodes.sort((a, b) => b.value - a.value);
 
-    //centers
-    // if (this.props.onChange && this.props.onChange.target.name === "region") {
-    let centers = regions.map((region, index) => {
+    //Define centers
+    let centers = indics.map((region, index) => {
       return {
-        x: (index + 1) * (this.props.width / (regions.length + 1)),
+        x: (index + 1) * (this.props.width / (indics.length + 1)),
         y: this.props.height / 2,
         region: region
       };
@@ -133,9 +135,12 @@ class Chart extends React.Component {
       .get(`${process.env.REACT_APP_API_URL || ""}/api/countries`)
       .then(responseFromApi => {
         const nodes = this.createNodes(responseFromApi.data);
-        this.setState({ nodes: _.cloneDeep(nodes) }, () => {
-          this.updateSimulation();
-        });
+        this.setState(
+          { nodes: _.cloneDeep(nodes), rawData: responseFromApi.data },
+          () => {
+            this.updateSimulation();
+          }
+        );
       });
   }
 
@@ -144,9 +149,15 @@ class Chart extends React.Component {
       console.log("onChange changed to", this.props.onChange);
       if (this.props.onChange === "region") {
         this.byRegion = true;
+        this.splitIndicator = "region";
+      } else if (this.props.onChange === "landlocked") {
+        this.byRegion = true;
+        this.splitIndicator = "landlocked";
       } else {
         this.byRegion = false;
+        this.splitIndicator = null;
       }
+      this.createNodes(this.state.rawData);
       console.log("byRegion", this.byRegion);
       this.updateSimulation();
     }
