@@ -7,13 +7,7 @@ class Footer extends Component {
       <footer className="footer">
         <div className="footer__content">
           Project IronHack <span>🦖</span>
-          <Link
-            to="www.linkedin.com/in/elodie-cassignol"
-            className="footer__link"
-          >
-            {" "}
-            EloK6
-          </Link>
+          <a href="www.linkedin.com/in/elodie-cassignol">EloK6</a>
         </div>
       </footer>
     );
