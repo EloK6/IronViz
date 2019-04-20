@@ -176,9 +176,6 @@ class Chart extends React.Component {
       } else if (this.props.onChange === "landlocked") {
         this.byRegion = true;
         this.splitIndicator = "landlocked";
-      } else if (this.props.onChange === "subregion") {
-        this.byRegion = true;
-        this.splitIndicator = "subregion";
       } else {
         this.byRegion = false;
         this.splitIndicator = null;
