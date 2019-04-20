@@ -19,8 +19,12 @@ class Countries extends Component {
     axios
       .get(`${process.env.REACT_APP_API_URL || ""}/api/countries`)
       .then(responseFromApi => {
+        const countries = responseFromApi.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        console.log("helo", responseFromApi.data);
         this.setState({
-          listOfCountries: responseFromApi.data
+          listOfCountries: countries
         });
       });
   };
