@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "dev": "DEBUG=ironviz:* nodemon --inspect --ignore client-ironviz/ ./bin/www",
     "dev-windows": "nodemon ./bin/www",
-    "build": "cd client && npm install && npm run build"
+    "build": "cd client-ironviz && npm install && npm run build"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
